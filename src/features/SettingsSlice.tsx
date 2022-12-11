@@ -11,7 +11,7 @@ interface State {
 }
 
 const initialState: State = {
-  dark: false,
+  dark: true,
   account: null,
 };
 

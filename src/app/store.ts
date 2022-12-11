@@ -8,13 +8,12 @@ import {
   getDefaultMiddleware,
 } from "@reduxjs/toolkit";
 import SettingsSlice from "../features/SettingsSlice";
-import CartSlice from "../features/CartSlice";
 const customizedMiddleware = getDefaultMiddleware({
   serializableCheck: false,
 });
 
 export const store = configureStore({
-  reducer: { settings: SettingsSlice, cart: CartSlice },
+  reducer: { settings: SettingsSlice },
   middleware: customizedMiddleware,
 });
 
