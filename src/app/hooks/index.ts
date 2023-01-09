@@ -1,10 +1,11 @@
-import { useRef, useEffect } from "react";
+import { useRef, useEffect, useState } from "react";
 import {
   useWindowDimensions,
   Animated,
   View,
   StyleProp,
   ViewStyle,
+  Keyboard,
 } from "react-native";
 import {
   AnimateStyle,
@@ -12,11 +13,17 @@ import {
   interpolate,
   Extrapolate,
   SharedValue,
+  useSharedValue,
+  withTiming,
+  Easing,
+  useDerivedValue,
 } from "react-native-reanimated";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
+import { setDarkStatusBar } from "../../features/SettingsSlice";
 import {
-  BLACK,
+  DARK_GREY,
   GREY,
+  LIGHT,
   LIGHTER_GREY,
   LIGHT_GREY,
   WHITE,
@@ -39,22 +46,29 @@ export const useViewportUnits = () => {
 export const useThemeColors = () => {
   const { dark } = useAppSelector((state) => state.settings);
   const lightMode = {
-    main: WHITE,
+    main: LIGHT,
     second: LIGHTER_GREY,
-    invertedMain: BLACK,
+    invertedMain: DARK_GREY,
     invertedSecond: GREY,
     alternate: LIGHT_GREY,
     isDark: dark,
   };
 
   const darkMode = {
-    main: BLACK,
+    main: DARK_GREY,
     second: GREY,
-    invertedMain: WHITE,
+    invertedMain: LIGHT,
     invertedSecond: LIGHTER_GREY,
     alternate: LIGHT_GREY,
     isDark: dark,
   };
 
   return dark ? darkMode : lightMode;
+};
+
+export const useOpenSectionRef = (bool: boolean) => {
+  const load = useDerivedValue(() => withTiming(bool ? 1 : 0), [bool]);
+  const unload = useDerivedValue(() => withTiming(bool ? 0 : 1), [bool]);
+
+  return { load, unload };
 };

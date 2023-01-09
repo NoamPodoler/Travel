@@ -1,16 +1,10 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { useEffect, useRef } from "react";
+import { StyleSheet, TouchableOpacity, View, Text } from "react-native";
+import React from "react";
 import LottieView from "lottie-react-native";
 import { SCREEN_WIDTH } from "../utils/constans";
-import Btn from "../components/common/Btn";
-import Center from "../components/common/Center";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import {
-  BOTTOMTAB,
-  RootNavigatorParamList,
-} from "../navigation/NavigationTypes";
-import LandingButton from "../components/other/LandingButton";
+import { MAIN, RootNavigatorParamList } from "../navigation/NavigationTypes";
 import { useThemeColors } from "../app/hooks";
 
 type Props = {};
@@ -19,7 +13,7 @@ const Landing = (props: Props) => {
   const navigation =
     useNavigation<StackNavigationProp<RootNavigatorParamList>>();
 
-  const { main, second, invertedMain, invertedSecond, isDark } =
+  const { main, second, invertedMain, invertedSecond, isDark, alternate } =
     useThemeColors();
 
   return (
@@ -34,10 +28,15 @@ const Landing = (props: Props) => {
       </View>
 
       <View style={styles.footer}>
-        <LandingButton
-          onPress={() => navigation.navigate(BOTTOMTAB)}
-          delay={2000}
-        />
+        <TouchableOpacity
+          style={[
+            styles.button,
+            { backgroundColor: second, borderColor: alternate },
+          ]}
+          onPress={() => navigation.navigate(MAIN)}
+        >
+          <Text style={{ color: invertedMain }}>Get Started</Text>
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -56,5 +55,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: 200,
+  },
+
+  button: {
+    paddingHorizontal: 80,
+    paddingVertical: 20,
+    borderRadius: 10,
   },
 });

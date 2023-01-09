@@ -12,3 +12,40 @@ export const hexToRgbA = (hex, opacity) => {
   }
   throw new Error("Bad Hex");
 };
+
+export const toLines = (
+  str: string,
+  numOfChars = 18,
+  bool = false
+): string[] => {
+  let arr = [];
+  let _str = str;
+  while (_str.length > 0) {
+    const line = getStringMaxChar(_str, numOfChars);
+    arr.push(bool ? [[line.result]] : [line.result]);
+    _str = line.remain;
+  }
+
+  return arr;
+};
+
+export const getStringMaxChar = (
+  str: string,
+  numOfChars: number
+): { result: string; remain: string } => {
+  const indexOfSpace = str.indexOf(" ");
+
+  if (indexOfSpace > numOfChars) return { result: "", remain: str };
+  else if (indexOfSpace == -1) {
+    const isSmall = str.length <= numOfChars;
+    return { result: isSmall ? str : "", remain: isSmall ? "" : str };
+  } else {
+    const word = str.slice(0, indexOfSpace);
+    const nextCall = getStringMaxChar(
+      str.slice(indexOfSpace + 1),
+      numOfChars - indexOfSpace
+    );
+
+    return { result: `${word} ${nextCall.result}`, remain: nextCall.remain };
+  }
+};

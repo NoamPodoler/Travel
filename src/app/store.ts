@@ -7,13 +7,14 @@ import {
   Reducer,
   getDefaultMiddleware,
 } from "@reduxjs/toolkit";
+import SearchSlice from "../features/SearchSlice";
 import SettingsSlice from "../features/SettingsSlice";
 const customizedMiddleware = getDefaultMiddleware({
   serializableCheck: false,
 });
 
 export const store = configureStore({
-  reducer: { settings: SettingsSlice },
+  reducer: { settings: SettingsSlice, search: SearchSlice },
   middleware: customizedMiddleware,
 });
 
