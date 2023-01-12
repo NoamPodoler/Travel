@@ -31,7 +31,7 @@ import TripDates from "./pages/tripDates/TripDates";
 import SliderFooter from "../../components/common/slider/SliderFooter";
 
 import OpenSection from "../../components/common/openSection/OpenSection";
-import TripExploreCreate from "./pages/tripExplore&Create/TripExploreCreate";
+import TripExploreCreate from "./pages/tripExploreCreate/TripExploreCreate";
 
 type Props = {};
 

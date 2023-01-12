@@ -27,7 +27,7 @@ import UnfocusedTripDestinations from "./extra/UnfocusedTripDestinations";
 import FocusedTripDestinations from "./extra/FocusedTripDestinations";
 import SelectedDestinations from "./extra/SelectedDestinations";
 import ShownSection from "../../../../components/common/shownSection/ShownSection";
-import { ANYWHERE } from "../../../../utils/constans";
+import { ANYWHERE, DESTINATIONS } from "../../../../utils/constans";
 import { goAnywhere } from "../../../../features/SearchSlice";
 
 type Props = { index: number; current: number; setFocus: Function };
@@ -51,9 +51,27 @@ const TripDestination = ({ index, current, setFocus }: Props) => {
     };
   });
 
-  function goEverywhere(): any {
-    throw new Error("Function not implemented.");
-  }
+  //
+
+  const [searchDestinations, setSearchDestinations] = useState(DESTINATIONS);
+  const timeout = React.useRef(null);
+
+  const onChangeHandler = (value) => {
+    clearTimeout(timeout.current);
+    setSearchValue(value);
+    timeout.current = setTimeout(() => {
+      fetchDestinations(value);
+    }, 1000);
+  };
+
+  const fetchDestinations = async (str: string) => {
+    if (str !== "") setSearchDestinations([]);
+
+    // Async Fetching Data
+    setTimeout(() => {
+      setSearchDestinations(DESTINATIONS);
+    }, 1000);
+  };
 
   return (
     <Animated.View style={[rStylePage, styles.page]}>
@@ -75,7 +93,7 @@ const TripDestination = ({ index, current, setFocus }: Props) => {
           placeholder="Search Destination"
           placeholderTextColor={hexToRgbA(invertedMain, 0.25)}
           onFocus={() => setSearchFocus(true)}
-          onChangeText={setSearchValue}
+          onChangeText={(value) => onChangeHandler(value)}
           style={{
             flex: 1,
             height: "100%",
@@ -100,7 +118,12 @@ const TripDestination = ({ index, current, setFocus }: Props) => {
         )}
       </View>
 
-      {isSearchFocus && <FocusedTripDestinations searchValue={searchValue} />}
+      {isSearchFocus && (
+        <FocusedTripDestinations
+          searchValue={searchValue}
+          destinations={searchDestinations}
+        />
+      )}
 
       <ShownSection isShown={!isSearchFocus} style={{ flex: 1 }}>
         <UnfocusedTripDestinations />

@@ -1,35 +1,17 @@
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import React, { useState } from "react";
-import Animated, {
-  FadeIn,
-  FadeOut,
-  useDerivedValue,
-  useSharedValue,
-  withTiming,
-} from "react-native-reanimated";
-import {
-  useAppSelector,
-  useOpenSectionRef,
-  useThemeColors,
-} from "../../../../../app/hooks";
-import OpenSection from "../../../../../components/common/openSection/OpenSection";
-import { AntDesign, Entypo } from "@expo/vector-icons";
+import { StyleSheet, View, Text, Image, ScrollView } from "react-native";
+import React from "react";
+import Animated, { FadeIn, FadeOut } from "react-native-reanimated";
+import { useAppSelector, useThemeColors } from "../../../../../app/hooks";
 import ThreeDotLoader from "../../../../../components/common/dotLoader/ThreeDotLoader";
 import { DESTINATIONS } from "../../../../../utils/constans";
-import SelectedDestinations from "./SelectedDestinations";
-import SelectedDestinationsRow from "../../../extra/SelectedDestinationsRow";
+import SearchDestinatonItem from "./SearchDestinatonItem";
 
 type Props = {
   searchValue: string;
+  destinations: typeof DESTINATIONS;
 };
 
-const FocusedTripDestinations = ({ searchValue }: Props) => {
+const FocusedTripDestinations = ({ searchValue, destinations }: Props) => {
   const { main, second, invertedMain, invertedSecond, alternate } =
     useThemeColors();
 
@@ -37,12 +19,23 @@ const FocusedTripDestinations = ({ searchValue }: Props) => {
 
   return (
     <Animated.View entering={FadeIn} style={{ flex: 1 }}>
-      {searchValue.length > 0 ? (
+      {destinations.length === 0 && searchValue.length > 0 ? (
         <ThreeDotLoader />
       ) : (
-        selectedDestinations.length > 0 && (
-          <SelectedDestinationsRow readOnly={true} />
-        )
+        <Animated.View entering={FadeIn} exiting={FadeOut}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{ borderRadius: 10, marginHorizontal: 10 }}
+          >
+            {destinations.map((item, index) => (
+              <SearchDestinatonItem
+                key={index.toString()}
+                item={item}
+                index={index}
+              />
+            ))}
+          </ScrollView>
+        </Animated.View>
       )}
     </Animated.View>
   );
