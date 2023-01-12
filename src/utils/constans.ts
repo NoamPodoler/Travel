@@ -6,12 +6,11 @@ export const { height: SCREEN_HEIGHT, width: SCREEN_WIDTH } =
 
 export const TODAY = Temporal.Now.plainDateISO();
 
-// Trip Destination
-
-export const ITEM_WIDTH = 200;
-export const ITEM_HORIZONTAL_MARGIN = 10;
-
-//
+export const ANYWHERE = {
+  city: "Anywhere",
+  country: "Universe",
+  image: require("../../assets/images/destinations/Anywhere.jpeg"),
+};
 
 export const DESTINATIONS = [
   {

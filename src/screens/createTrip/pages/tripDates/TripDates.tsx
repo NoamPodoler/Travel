@@ -2,14 +2,18 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { useAppSelector, useThemeColors } from "../../../../app/hooks";
 import { Temporal } from "@js-temporal/polyfill";
-import MonthView from "../../../../components/other/date/monthView/MonthView";
-import DatesSelectedDestinations from "./extra/DatesSelectedDestinations";
+import SelectedDestinationsRow from "../../extra/SelectedDestinationsRow";
+import DatesTable from "./extra/DatesTable";
+import DatesSummary from "./extra/DatesSummary";
 
-type Props = { setFocus: Function };
-
-const TripDates = ({ setFocus }: Props) => {
+type Props = { index: number; current: number; setFocus: Function };
+const TripDates = ({ index, current, setFocus }: Props) => {
   const { main, second, invertedMain, invertedSecond } = useThemeColors();
-  const { selectedDestinations } = useAppSelector((state) => state.search);
+  const { selectedDestinations, startingDate, endingDate } = useAppSelector(
+    (state) => state.search
+  );
+
+  const isSelected = startingDate !== null && endingDate !== null;
 
   return (
     <View style={styles.page}>
@@ -22,8 +26,11 @@ const TripDates = ({ setFocus }: Props) => {
         </Text>
       )}
 
-      <DatesSelectedDestinations />
-      <MonthView />
+      <View style={{ marginVertical: 10 }}>
+        <SelectedDestinationsRow readOnly={true} />
+      </View>
+      <DatesTable />
+      {isSelected && <DatesSummary />}
     </View>
   );
 };
@@ -38,6 +45,7 @@ const styles = StyleSheet.create({
 
   title: {
     fontSize: 28,
+    marginBottom: 10,
   },
 
   description: {

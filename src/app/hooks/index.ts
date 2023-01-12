@@ -1,32 +1,13 @@
-import { useRef, useEffect, useState } from "react";
-import {
-  useWindowDimensions,
-  Animated,
-  View,
-  StyleProp,
-  ViewStyle,
-  Keyboard,
-} from "react-native";
-import {
-  AnimateStyle,
-  useAnimatedStyle,
-  interpolate,
-  Extrapolate,
-  SharedValue,
-  useSharedValue,
-  withTiming,
-  Easing,
-  useDerivedValue,
-} from "react-native-reanimated";
+import { useEffect, useState } from "react";
+import { useWindowDimensions } from "react-native";
+import { withTiming, useDerivedValue } from "react-native-reanimated";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import { setDarkStatusBar } from "../../features/SettingsSlice";
 import {
   DARK_GREY,
   GREY,
   LIGHT,
   LIGHTER_GREY,
   LIGHT_GREY,
-  WHITE,
 } from "../../utils/colors";
 import { RootState, AppDispatch } from "../store";
 
@@ -43,11 +24,13 @@ export const useViewportUnits = () => {
   return { vh, vw };
 };
 
+// Theme colors (dark / light)
+
 export const useThemeColors = () => {
   const { dark } = useAppSelector((state) => state.settings);
   const lightMode = {
-    main: LIGHT,
-    second: LIGHTER_GREY,
+    main: LIGHTER_GREY,
+    second: LIGHT,
     invertedMain: DARK_GREY,
     invertedSecond: GREY,
     alternate: LIGHT_GREY,
@@ -66,9 +49,27 @@ export const useThemeColors = () => {
   return dark ? darkMode : lightMode;
 };
 
+// Open Section - Get Animated Value of (0 -> 1) from state {boolean}
+
 export const useOpenSectionRef = (bool: boolean) => {
   const load = useDerivedValue(() => withTiming(bool ? 1 : 0), [bool]);
   const unload = useDerivedValue(() => withTiming(bool ? 0 : 1), [bool]);
 
   return { load, unload };
+};
+
+// Slider Page - Get Ascending Value
+
+export const useSliderAscending = (current) => {
+  const [ascending, setAscending] = useState<boolean>(false);
+  const [prev, setPrev] = useState(current);
+
+  useEffect(() => {
+    if (current > prev) setAscending(true);
+    else setAscending(false);
+
+    setPrev(current);
+  }, [current]);
+
+  return ascending;
 };

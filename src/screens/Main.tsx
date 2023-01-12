@@ -1,7 +1,7 @@
 import { Feather, AntDesign } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import React from "react";
+import React, { useState } from "react";
 import {
   View,
   SafeAreaView,
@@ -9,17 +9,15 @@ import {
   Text,
   StyleSheet,
 } from "react-native";
-import { useThemeColors } from "../app/hooks";
+import { useOpenSectionRef, useThemeColors } from "../app/hooks";
 import Footer from "../components/other/footer/Footer";
 import {
   CREATE_TRIP,
   RootNavigatorParamList,
   SETTINGS,
 } from "../navigation/NavigationTypes";
-import { SCREEN_WIDTH } from "../utils/constans";
-import { center } from "../utils/styling";
-import LottieView from "lottie-react-native";
 import FooterItem from "../components/other/footer/FooterItem";
+import FlexSection from "../components/common/flexSection/FlexSection";
 
 type Props = {};
 
@@ -29,10 +27,12 @@ const Main = (props: Props) => {
   const navigation =
     useNavigation<StackNavigationProp<RootNavigatorParamList>>();
 
+  const [isLoad, setLoad] = useState(true);
+  const { load, unload } = useOpenSectionRef(isLoad);
+
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: main }}>
       <View style={styles.content}></View>
-
       <Footer
         left={
           <FooterItem position="left">

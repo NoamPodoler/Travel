@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Image, View } from "react-native";
 import { TouchableOpacity } from "react-native";
-import { useThemeColors } from "../../../../../app/hooks";
-import { BLACK, BLUE, PURPLE, WHITE } from "../../../../../utils/colors";
 import {
-  DESTINATIONS,
-  ITEM_HORIZONTAL_MARGIN,
-  ITEM_WIDTH,
-} from "../../../../../utils/constans";
+  useAppDispatch,
+  useAppSelector,
+  useThemeColors,
+} from "../../../../../app/hooks";
+import { BLACK, BLUE, PURPLE, WHITE } from "../../../../../utils/colors";
+import { DESTINATIONS } from "../../../../../utils/constans";
 import { Text, StyleSheet } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { hexToRgbA } from "../../../../../utils/fn";
@@ -19,63 +19,55 @@ import Animated, {
   useDerivedValue,
   withTiming,
 } from "react-native-reanimated";
+import {
+  addDestination,
+  modifySelectedDestination,
+} from "../../../../../features/SearchSlice";
 
 interface Props {
   item: typeof DESTINATIONS[0];
-  index: number;
-  handleAddDestination: Function;
   selected: boolean;
 }
 
-const DestinationItem = ({
-  item,
-  index,
-  handleAddDestination,
-  selected,
-}: Props) => {
+const DestinationItem = ({ item, selected }: Props) => {
   const { main, second, invertedMain, invertedSecond } = useThemeColors();
 
-  const load = useDerivedValue(() => withTiming(selected ? 1 : 0), [selected]);
+  const dispatch = useAppDispatch();
+
+  const { selectedDestinations } = useAppSelector((state) => state.search);
+
+  const focus = useDerivedValue(() => withTiming(selected ? 1 : 0), [selected]);
 
   const rStyleItem = useAnimatedStyle(() => {
-    const paddingVertical = interpolate(load.value, [0, 1], [20, 0]);
+    const width = interpolate(focus.value, [0, 1], [240, 0]);
+    const paddingHorizontal = interpolate(focus.value, [0, 1], [4, 0]);
+    const opacity = interpolate(focus.value, [0, 0.6], [1, 0]);
     return {
-      paddingVertical,
-    };
-  });
-
-  const rStyleTitle = useAnimatedStyle(() => {
-    const backgroundColor = interpolateColor(
-      load.value,
-      [0, 1],
-      [main, invertedMain]
-    );
-
-    const color = interpolateColor(load.value, [0, 1], [invertedMain, main]);
-    return {
-      backgroundColor,
-      color,
+      width,
+      paddingHorizontal,
+      opacity,
     };
   });
 
   return (
-    <Animated.View style={rStyleItem}>
+    <Animated.View style={[rStyleItem]}>
       <TouchableOpacity
-        onPress={() => handleAddDestination(DESTINATIONS[index])}
-        style={[
-          styles.destination,
-          {
-            backgroundColor: selected ? invertedMain : main,
-            width: ITEM_WIDTH,
-            marginRight: ITEM_HORIZONTAL_MARGIN,
-          },
-        ]}
+        onPress={() => {
+          if (!selected) dispatch(addDestination(item));
+        }}
+        style={[styles.destination]}
+        activeOpacity={1}
       >
         <Image source={item.image} style={styles.background} />
 
-        <Animated.Text style={[rStyleTitle, styles.title]}>
+        <Text
+          style={[
+            styles.title,
+            { backgroundColor: second, color: invertedMain },
+          ]}
+        >
           {item.city}
-        </Animated.Text>
+        </Text>
       </TouchableOpacity>
     </Animated.View>
   );

@@ -23,17 +23,6 @@ const ScreenSlider = ({
   state: { current, setCurrent },
   style = {},
 }: Props) => {
-  //State
-  const [prev, setPrev] = useState<number>(0);
-  const [ascending, setAscending] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (current > prev) setAscending(true);
-    else setAscending(false);
-
-    setPrev(current);
-  }, [current]);
-
   const scrollRef = useRef<ScrollView>();
 
   useEffect(() => {
@@ -69,16 +58,6 @@ const ScreenSlider = ({
           </View>
         ))}
       </ScrollView>
-
-      <View style={styles.bar}>
-        {list.map((_, index) => (
-          <SliderLine
-            key={index.toString()}
-            isFocus={current === index}
-            ascending={ascending}
-          />
-        ))}
-      </View>
     </Animated.View>
   );
 };
@@ -86,11 +65,6 @@ const ScreenSlider = ({
 export default ScreenSlider;
 
 const styles = StyleSheet.create({
-  bar: {
-    flexDirection: "row",
-    paddingHorizontal: SCREEN_WIDTH / 3,
-  },
-
   btn: {
     position: "absolute",
     height: "100%",

@@ -6,7 +6,6 @@ import { useAppSelector, useThemeColors } from "../app/hooks";
 import { StatusBar, View } from "react-native";
 import Main from "../screens/Main";
 import Settings from "../screens/Settings";
-import SearchMap from "../screens/SearchTab/SearchMap";
 import CreateTrip from "../screens/createTrip/CreateTrip";
 
 const Stack = createNativeStackNavigator();

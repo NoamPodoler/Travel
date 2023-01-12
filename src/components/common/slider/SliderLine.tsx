@@ -7,7 +7,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated";
 import { useThemeColors } from "../../../app/hooks";
-import { BLUE } from "../../../utils/colors";
+import { BLUE, PURPLE } from "../../../utils/colors";
 
 type Props = {
   isFocus: boolean;
@@ -20,7 +20,7 @@ const SliderLine = ({
   isFocus,
   ascending,
   duration = 400,
-  color = BLUE,
+  color = PURPLE,
 }: Props) => {
   const { main, second, invertedMain, invertedSecond, alternate } =
     useThemeColors();

@@ -20,7 +20,7 @@ const Landing = (props: Props) => {
     <View style={{ flex: 1, backgroundColor: main }}>
       <View style={styles.container}>
         <LottieView
-          source={require("../../assets/Lottie/Check.json")}
+          source={require("../../assets/lottie/Check.json")}
           style={{ width: SCREEN_WIDTH - 100 }}
           autoPlay
           loop={false}

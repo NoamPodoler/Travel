@@ -9,7 +9,12 @@ import {
   Text,
   StyleSheet,
 } from "react-native";
-import { useAppSelector, useThemeColors } from "../../app/hooks";
+import {
+  useAppSelector,
+  useOpenSectionRef,
+  useSliderAscending,
+  useThemeColors,
+} from "../../app/hooks";
 import Footer from "../../components/other/footer/Footer";
 import {
   CREATE_TRIP,
@@ -23,7 +28,10 @@ import FooterItem from "../../components/other/footer/FooterItem";
 import ScreenSlider from "../../components/common/slider/Slider";
 import TripDestination from "./pages/tripDestination/TripDestination";
 import TripDates from "./pages/tripDates/TripDates";
-import TripTags from "./pages/TripTags";
+import SliderFooter from "../../components/common/slider/SliderFooter";
+
+import OpenSection from "../../components/common/openSection/OpenSection";
+import TripExploreCreate from "./pages/tripExplore&Create/TripExploreCreate";
 
 type Props = {};
 
@@ -34,13 +42,35 @@ const CreateTrip = (props: Props) => {
     useNavigation<StackNavigationProp<RootNavigatorParamList>>();
 
   const [current, setCurrent] = useState(0);
-  const [pages, _] = useState<React.ReactNode[]>([
-    <TripDestination setFocus={(index) => setCurrent(index)} />,
-    <TripDates setFocus={(index) => setCurrent(index)} />,
-    <TripTags setFocus={(index) => setCurrent(index)} />,
-  ]);
+  const currentLoad = useOpenSectionRef(current === 2);
+  const ascending = useSliderAscending(current);
 
-  const { selectedDestinations } = useAppSelector((state) => state.search);
+  const pages = [
+    <TripDestination
+      index={0}
+      current={current}
+      setFocus={(index) => setCurrent(index)}
+    />,
+    <TripDates
+      index={1}
+      current={current}
+      setFocus={(index) => setCurrent(index)}
+    />,
+    <TripExploreCreate
+      index={2}
+      current={current}
+      setFocus={(index) => setCurrent(index)}
+    />,
+  ];
+
+  const { selectedDestinations, startingDate, endingDate } = useAppSelector(
+    (state) => state.search
+  );
+
+  // Boolean values represnting if the use is allowed to continue to the next page
+  const aIsValid = current === 0 && selectedDestinations.length > 0;
+  const bIsValid =
+    current === 1 && startingDate !== null && endingDate !== null;
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: main }}>
@@ -69,26 +99,27 @@ const CreateTrip = (props: Props) => {
             onPress={() => navigation.navigate(CREATE_TRIP)}
             position="center"
           >
-            <Text style={{ color: invertedMain, fontStyle: "italic" }}>
-              Plan a Trip
-            </Text>
+            <SliderFooter
+              list={pages}
+              current={current}
+              ascending={ascending}
+            />
           </FooterItem>
         }
         right={
-          selectedDestinations.length > 0 && (
+          current < pages.length - 1 &&
+          (aIsValid || bIsValid) && (
             <FooterItem
               onPress={() => {
-                if (current < pages.length - 1) setCurrent((prev) => prev + 1);
+                setCurrent((prev) => prev + 1);
               }}
               position="right"
             >
-              {current < pages.length - 1 && (
-                <Ionicons
-                  name="return-down-forward"
-                  size={22}
-                  color={invertedMain}
-                />
-              )}
+              <Ionicons
+                name="return-down-forward"
+                size={22}
+                color={invertedMain}
+              />
             </FooterItem>
           )
         }

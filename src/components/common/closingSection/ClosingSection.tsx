@@ -1,6 +1,7 @@
 import { StyleSheet, Text, View, ViewStyle } from "react-native";
 import React, { useEffect, useState } from "react";
 import Animated, {
+  Extrapolate,
   FadeIn,
   interpolate,
   SharedValue,
@@ -13,50 +14,43 @@ import { SCREEN_HEIGHT } from "../../../utils/constans";
 
 type Props = {
   children: React.ReactNode;
-  load: SharedValue<number>;
+  translate: SharedValue<number>;
   style?: ViewStyle | ViewStyle[];
-  containerStyle?: ViewStyle | ViewStyle[];
-  properties?: {
-    opacity?: boolean;
-  };
 };
 
-const OpenSection = ({
-  children,
-  load,
-  style = {},
-  containerStyle = {},
-  properties: { opacity = true } = {
-    opacity: true,
-  },
-}: Props) => {
+const ClosingSection = ({ children, translate, style = {} }: Props) => {
   const [height, setHeight] = useState(0);
 
   const rStyle = useAnimatedStyle(() => {
-    const _opacity = interpolate(load.value, [0, 1], [0, 1]);
-    const marginTop = interpolate(load.value, [0, 1], [-height, 0]);
-    const paddingBottom = interpolate(load.value, [0, 1], [-height, 0]);
+    const marginTop = translate.value;
+    const paddingBottom = translate.value;
+    const scale = interpolate(
+      translate.value,
+      [0, 100],
+      [1, 0.8],
+      Extrapolate.CLAMP
+    );
 
     return {
-      opacity: opacity ? _opacity : 1,
       marginTop,
       paddingBottom,
+      transform: [{ scale }],
     };
   });
 
   return (
-    <View style={[{ overflow: "hidden" }, containerStyle]}>
+    <View style={{ overflow: "hidden" }}>
       <Animated.View
-        style={[rStyle, styles.section]}
+        style={[rStyle, styles.section, style]}
         onLayout={(event) => setHeight(event.nativeEvent.layout.height)}
       >
-        <View style={style}>{children}</View>
+        {children}
       </Animated.View>
     </View>
   );
 };
 
-export default OpenSection;
+export default ClosingSection;
 
 const styles = StyleSheet.create({
   section: {

@@ -1,3 +1,5 @@
+import { DESTINATIONS, TODAY } from "./constans";
+
 export const hexToRgbA = (hex, opacity) => {
   let c;
   if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
@@ -13,39 +15,47 @@ export const hexToRgbA = (hex, opacity) => {
   throw new Error("Bad Hex");
 };
 
-export const toLines = (
-  str: string,
-  numOfChars = 18,
-  bool = false
-): string[] => {
-  let arr = [];
-  let _str = str;
-  while (_str.length > 0) {
-    const line = getStringMaxChar(_str, numOfChars);
-    arr.push(bool ? [[line.result]] : [line.result]);
-    _str = line.remain;
-  }
-
-  return arr;
+export const getMonth = (month: number) => {
+  if (month === 1) return "Janurary";
+  if (month === 2) return "Feburary";
+  if (month === 3) return "March";
+  if (month === 4) return "April";
+  if (month === 5) return "May";
+  if (month === 6) return "June";
+  if (month === 7) return "July";
+  if (month === 8) return "August";
+  if (month === 9) return "September";
+  if (month === 10) return "October";
+  if (month === 11) return "November";
+  if (month === 12) return "December";
+  return "";
 };
 
-export const getStringMaxChar = (
-  str: string,
-  numOfChars: number
-): { result: string; remain: string } => {
-  const indexOfSpace = str.indexOf(" ");
+export const getDay = (day: number) => {
+  if (day < 0 || day > 31) return;
+  else if (day === 1 || day === 21 || day === 31) return `${day}st`;
+  else if (day === 2 || day === 22) return `${day}nd`;
+  else if (day === 3 || day === 23) return `${day}rd`;
+  return `${day}th`;
+};
 
-  if (indexOfSpace > numOfChars) return { result: "", remain: str };
-  else if (indexOfSpace == -1) {
-    const isSmall = str.length <= numOfChars;
-    return { result: isSmall ? str : "", remain: isSmall ? "" : str };
-  } else {
-    const word = str.slice(0, indexOfSpace);
-    const nextCall = getStringMaxChar(
-      str.slice(indexOfSpace + 1),
-      numOfChars - indexOfSpace
-    );
+export const destinationsToString = (list: typeof DESTINATIONS) => {
+  return list.map(
+    (item, index) =>
+      `${item.city}${
+        index < list.length - 2
+          ? ", "
+          : index !== list.length - 1
+          ? " and "
+          : ""
+      }`
+  );
+};
 
-    return { result: `${word} ${nextCall.result}`, remain: nextCall.remain };
-  }
+export const dateFormat = (date: typeof TODAY) => {
+  return `${getMonth(date.month)} ${getDay(date.day)}, ${date.year}`;
+};
+
+export const getRandomNumber = (n1: number, n2: number) => {
+  return Math.round(Math.random() * (n2 - n1)) + n1 + 1;
 };
