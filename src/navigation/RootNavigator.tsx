@@ -4,16 +4,18 @@ import {
   MAIN,
   LANDING,
   SETTINGS,
-  CREATE_TRIP,
-  TICKET,
+  SIGNINUP,
+  PROFILE,
+  PLAN,
 } from "./NavigationTypes";
 import Landing from "../screens/Landing";
 import { useAppSelector, useThemeColors } from "../app/hooks";
 import { StatusBar, View } from "react-native";
-import Main from "../screens/Main";
 import Settings from "../screens/Settings";
-import CreateTrip from "../screens/createTrip/CreateTrip";
-import Ticket from "../screens/Ticket";
+import SignInUp from "../screens/signInUp/SignInUp";
+import Profile from "../screens/Profile";
+import Plan from "../screens/Plan";
+import Main from "../screens/main/Main";
 
 const Stack = createNativeStackNavigator();
 
@@ -37,15 +39,20 @@ const RootNavigator = () => {
       <Stack.Navigator
         screenOptions={{
           headerShown: false,
-          // gestureDirection: "vertical",
-          // gestureEnabled: false,
+          gestureDirection: "vertical",
+          gestureEnabled: false,
         }}
       >
-        <Stack.Screen name={MAIN} component={Main} />
-        <Stack.Screen name={CREATE_TRIP} component={CreateTrip} />
-        <Stack.Screen name={TICKET} component={Ticket} />
-        <Stack.Screen name={SETTINGS} component={Settings} />
         <Stack.Screen name={LANDING} component={Landing} />
+        <Stack.Screen name={MAIN} component={Main} />
+        <Stack.Screen
+          name={SIGNINUP}
+          component={SignInUp}
+          initialParams={{ startWithPopup: false }}
+        />
+        <Stack.Screen name={PLAN} component={Plan} />
+        <Stack.Screen name={PROFILE} component={Profile} />
+        <Stack.Screen name={SETTINGS} component={Settings} />
       </Stack.Navigator>
     </View>
   );

@@ -1,6 +1,7 @@
 export const PURPLE = "#6a42fc";
 export const BLUE = "#124ee6";
 export const LIGHT_BLUE = "#2180c4";
+export const RED = "#d45d65";
 
 // Main Colors
 export const BLACK = "#000000";

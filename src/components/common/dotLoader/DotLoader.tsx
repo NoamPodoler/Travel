@@ -9,6 +9,7 @@ import Animated, {
   withRepeat,
   withTiming,
 } from "react-native-reanimated";
+import { withCustomTiming } from "../../../utils/fn";
 
 type Props = {
   index: number;

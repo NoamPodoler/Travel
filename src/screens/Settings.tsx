@@ -18,7 +18,6 @@ import {
   SETTINGS,
 } from "../navigation/NavigationTypes";
 import Switch from "../components/common/switch/Switch";
-import FooterItem from "../components/other/footer/FooterItem";
 
 type Props = {};
 
@@ -36,16 +35,16 @@ const Settings = (props: Props) => {
 
       <Footer
         left={
-          <FooterItem onPress={() => navigation.goBack()} position="left">
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <Ionicons name="return-down-back" size={22} color={invertedMain} />
-          </FooterItem>
+          </TouchableOpacity>
         }
         center={
-          <FooterItem position="center">
+          <TouchableOpacity>
             <Text style={{ color: invertedMain, fontStyle: "italic" }}>
               Settings
             </Text>
-          </FooterItem>
+          </TouchableOpacity>
         }
         right={
           <Switch

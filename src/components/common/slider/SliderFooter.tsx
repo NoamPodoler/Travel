@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, ViewStyle } from "react-native";
 import React from "react";
 import SliderLine from "./SliderLine";
 import { SCREEN_WIDTH } from "../../../utils/constans";
@@ -10,6 +10,7 @@ type Props = {
   current: number;
   ascending?: boolean;
   color?: string;
+  style?: ViewStyle | ViewStyle[];
 };
 
 const SliderFooter = ({
@@ -17,9 +18,10 @@ const SliderFooter = ({
   current,
   ascending = true,
   color = PURPLE,
+  style = {},
 }: Props) => {
   return (
-    <View style={row}>
+    <View style={[row, style]}>
       {list.map((_, index) => (
         <SliderLine
           key={index.toString()}

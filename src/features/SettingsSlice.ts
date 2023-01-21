@@ -1,22 +1,17 @@
 import { createSlice, Reducer } from "@reduxjs/toolkit";
 
-interface Account {
-  username: string;
-  email: string;
-}
-
 interface State {
   dark: boolean;
   darkStatusBar: boolean;
   isStatusBarShown: boolean | null;
-  account: Account | null;
+  isFooterShown: boolean;
 }
 
 const initialState: State = {
-  dark: false,
-  darkStatusBar: true,
+  dark: true,
+  darkStatusBar: false,
   isStatusBarShown: true,
-  account: null,
+  isFooterShown: true,
 };
 
 const SettingsSlice = createSlice({
@@ -33,10 +28,6 @@ const SettingsSlice = createSlice({
       state.darkStatusBar = !state.dark;
     },
 
-    setAccount: (state: State, action: { payload: Account }) => {
-      state.account = action.payload;
-    },
-
     setDarkStatusBar: (state: State, action: { payload: boolean }) => {
       state.darkStatusBar = action.payload;
     },
@@ -48,16 +39,20 @@ const SettingsSlice = createSlice({
     setStatusBarShown: (state: State, action: { payload: boolean }) => {
       state.isStatusBarShown = action.payload;
     },
+
+    setFooter: (state: State, action: { payload: boolean }) => {
+      state.isFooterShown = action.payload;
+    },
   },
 });
 
 export const {
   setDarkMode,
   switchDarkMode,
-  setAccount,
   setDarkStatusBar,
   resetStatusBar,
   setStatusBarShown,
+  setFooter,
 } = SettingsSlice.actions;
 const reducer = SettingsSlice.reducer as Reducer<State>;
 export default reducer;

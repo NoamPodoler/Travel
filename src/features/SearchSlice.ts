@@ -1,9 +1,10 @@
 import { Temporal } from "@js-temporal/polyfill";
 import { createSlice, Reducer } from "@reduxjs/toolkit";
-import { DESTINATIONS, TODAY } from "../utils/constans";
+import { TODAY } from "../utils/constans";
+import { DestinationInterface } from "../utils/interfaces";
 
 interface State {
-  selectedDestinations: typeof DESTINATIONS;
+  selectedDestinations: DestinationInterface[];
   startingDate: Temporal.PlainDate;
   endingDate: Temporal.PlainDate;
 }
@@ -20,10 +21,10 @@ const SearchSlice = createSlice({
   reducers: {
     modifySelectedDestination: (
       state: State,
-      action: { payload: typeof DESTINATIONS[0] }
+      action: { payload: DestinationInterface }
     ) => {
       const isFoundIndex = state.selectedDestinations.findIndex(
-        (item) => item.city === action.payload.city
+        (item) => item.title === action.payload.title
       );
 
       // New Destination
@@ -31,30 +32,26 @@ const SearchSlice = createSlice({
       // Remove Existing Destination
       else
         state.selectedDestinations = state.selectedDestinations.filter(
-          (item) => item.city !== action.payload.city
+          (item) => item.title !== action.payload.title
         );
-    },
-
-    resetDestinations: (state: State) => {
-      state.selectedDestinations = [];
     },
 
     addDestination: (
       state: State,
-      action: { payload: typeof DESTINATIONS[0] }
+      action: { payload: DestinationInterface }
     ) => {
       state.selectedDestinations.push(action.payload);
     },
 
     removeDestination: (
       state: State,
-      action: { payload: typeof DESTINATIONS[0] }
+      action: { payload: DestinationInterface }
     ) => {
       state.selectedDestinations = state.selectedDestinations.filter(
-        (item) => item.city !== action.payload.city
+        (item) => item.title !== action.payload.title
       );
     },
-    goAnywhere: (state: State, action: { payload: typeof DESTINATIONS[0] }) => {
+    goAnywhere: (state: State, action: { payload: DestinationInterface }) => {
       state.selectedDestinations = [action.payload];
     },
 
@@ -80,16 +77,22 @@ const SearchSlice = createSlice({
         state.endingDate = action.payload;
       }
     },
+
+    resetData: (state: State) => {
+      state.selectedDestinations = [];
+      state.startingDate = null;
+      state.endingDate = null;
+    },
   },
 });
 
 export const {
   modifySelectedDestination,
-  resetDestinations,
   addDestination,
   removeDestination,
   goAnywhere,
   addDate,
+  resetData,
 } = SearchSlice.actions;
 const reducer = SearchSlice.reducer as Reducer<State>;
 export default reducer;

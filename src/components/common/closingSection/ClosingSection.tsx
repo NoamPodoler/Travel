@@ -8,7 +8,6 @@ import Animated, {
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
-  withTiming,
 } from "react-native-reanimated";
 import { SCREEN_HEIGHT } from "../../../utils/constans";
 

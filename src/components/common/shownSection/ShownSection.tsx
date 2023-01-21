@@ -3,8 +3,8 @@ import React, { useEffect, useMemo, useState } from "react";
 import Animated, {
   useAnimatedStyle,
   useDerivedValue,
-  withTiming,
 } from "react-native-reanimated";
+import { withCustomTiming } from "../../../utils/fn";
 
 type Props = {
   children: React.ReactNode;
@@ -14,7 +14,7 @@ type Props = {
 
 const ShownSection = ({ children, isShown, style = {} }: Props) => {
   const load = useDerivedValue(() => {
-    return withTiming(isShown ? 1 : 0);
+    return withCustomTiming(isShown ? 1 : 0);
   }, [isShown]);
 
   const [_isShown, setShown] = useState(isShown);

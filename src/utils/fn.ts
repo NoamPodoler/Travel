@@ -1,4 +1,12 @@
-import { DESTINATIONS, TODAY } from "./constans";
+import { Easing, withTiming } from "react-native-reanimated";
+import { TODAY } from "./constans";
+import { User as FirebaseUser } from "firebase/auth";
+import {
+  DestinationInterface,
+  PlanInterface,
+  WorldInterface,
+} from "./interfaces";
+import { Temporal } from "@js-temporal/polyfill";
 
 export const hexToRgbA = (hex, opacity) => {
   let c;
@@ -39,10 +47,10 @@ export const getDay = (day: number) => {
   return `${day}th`;
 };
 
-export const destinationsToString = (list: typeof DESTINATIONS) => {
+export const destinationsToString = (list: DestinationInterface[]) => {
   return list.map(
     (item, index) =>
-      `${item.city}${
+      `${item.title}${
         index < list.length - 2
           ? ", "
           : index !== list.length - 1
@@ -58,4 +66,107 @@ export const dateFormat = (date: typeof TODAY) => {
 
 export const getRandomNumber = (n1: number, n2: number) => {
   return Math.round(Math.random() * (n2 - n1)) + n1 + 1;
+};
+
+export const withCustomTiming = (i: number) => {
+  "worklet";
+  return withTiming(i, {
+    easing: Easing.bezier(0.85, 0, 0.15, 1),
+    duration: 400,
+  });
+};
+
+//
+
+export const isUserValid = ({
+  user,
+  fullName,
+  country,
+}: {
+  user: FirebaseUser;
+  fullName: string;
+  country: string;
+}) => {
+  if (user === null) return false;
+  if (fullName === null) return false;
+  if (country === null) return false;
+
+  return true;
+};
+
+export const isEmailValid = (email: string) => {
+  const expression: RegExp = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+  const isValid = expression.test(email);
+  return { error: isValid ? "" : "Email is Invalid", isValid: isValid };
+};
+
+export const isPasswordValid = (pwd: string) => {
+  if (pwd.length < 5)
+    return { isValid: false, error: "Password must be at least 5 characters" };
+  if (pwd.length > 15)
+    return { isValid: false, error: "Password must be under 15 characters" };
+
+  return { isValid: true, error: "" };
+};
+
+export const isFullNameValid = (name: string) => {
+  if (name.length < 5)
+    return { isValid: false, error: "Name must be at least 5 characters" };
+  if (name.length > 25)
+    return { isValid: false, error: "Name must be under 25 characters" };
+
+  return { isValid: true, error: "" };
+};
+
+export const isPasswordsMatching = (pwd1: string, pwd2: string) => {
+  return {
+    isValid: pwd1 === pwd2 && isPasswordValid(pwd1).isValid,
+    error:
+      pwd1 === pwd2
+        ? isPasswordValid(pwd1).isValid
+          ? ""
+          : "Password is not Valid"
+        : "Passwords are not matching",
+  };
+};
+
+export const getContinentList = (continent: string, list: WorldInterface) => {
+  if (continent === "Africa") return list.africa;
+  if (continent === "Asia") return list.asia;
+  if (continent === "Europe") return list.europe;
+  if (continent === "Oceania") return list.oceania;
+  if (continent === "South America") return list.southAmerica;
+  if (continent === "North America") return list.northAmerica;
+};
+
+//
+
+export const dateToInt = (date: Temporal.PlainDate) => {
+  return Temporal.PlainDate.from({ year: 2000, month: 1, day: 1 }).until(date)
+    .days;
+};
+
+export const intToDate = (int: number) => {
+  return Temporal.PlainDate.from({ year: 2000, month: 1, day: 1 }).add({
+    days: int,
+  });
+};
+
+export const dateToMonthYear = (date: Temporal.PlainDate): string => {
+  return date.toPlainYearMonth().toString();
+};
+
+export const dateToPriorMonthYear = (date: Temporal.PlainDate): string[] => {
+  return [dateToMonthYear(date.add({ months: -1 })), dateToMonthYear(date)];
+};
+
+//
+
+export const isPlanValid = (plan: PlanInterface) => {
+  if (plan.title?.length === 0) return false;
+  if (plan.destinations?.length === 0) return false;
+  if (plan.creator === null) return false;
+  if (plan.startingDate === null || plan.endingDate === null) return false;
+
+  return true;
 };

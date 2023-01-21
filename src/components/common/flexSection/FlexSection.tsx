@@ -7,7 +7,6 @@ import Animated, {
   useAnimatedStyle,
   useDerivedValue,
   useSharedValue,
-  withTiming,
 } from "react-native-reanimated";
 import { SCREEN_HEIGHT } from "../../../utils/constans";
 
@@ -20,7 +19,7 @@ type Props = {
 const FlexSection = ({ children, load, style = {} }: Props) => {
   const rStyleFlex = useAnimatedStyle(() => {
     const flex = load.value;
-    const opacity = load.value;
+    const opacity = interpolate(load.value, [0.75, 1], [0, 1]);
     return {
       flex,
       opacity,

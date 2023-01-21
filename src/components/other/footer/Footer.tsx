@@ -1,24 +1,35 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView, StyleSheet, Text, View, ViewStyle } from "react-native";
 import React from "react";
 import { Feather } from "@expo/vector-icons";
 import { SETTINGS } from "../../../navigation/NavigationTypes";
-import { useThemeColors } from "../../../app/hooks";
+import {
+  useAppSelector,
+  useOpenSection,
+  useThemeColors,
+} from "../../../app/hooks";
+import OpenSection from "../../common/openSection/OpenSection";
 
 type Props = {
-  left: React.ReactNode;
-  center: React.ReactNode;
-  right: React.ReactNode;
+  left?: React.ReactNode;
+  center?: React.ReactNode;
+  right?: React.ReactNode;
+  style?: ViewStyle | ViewStyle[];
 };
 
-const Footer = ({ left, center, right }: Props) => {
+const Footer = ({
+  left = <></>,
+  center = <></>,
+  right = <></>,
+  style = {},
+}: Props) => {
   const { main, second, invertedMain, invertedSecond } = useThemeColors();
 
   return (
-    <View style={styles.navigation}>
-      <View style={[styles.button, styles.left]}>{left}</View>
-      <View style={[styles.button, styles.center]}>{center}</View>
-      <View style={[styles.button, styles.right]}>{right}</View>
-    </View>
+    <SafeAreaView style={[styles.navigation, style]}>
+      <View style={[styles.btn, styles.left]}>{left}</View>
+      <View style={[styles.btn, styles.center]}>{center}</View>
+      <View style={[styles.btn, styles.right]}>{right}</View>
+    </SafeAreaView>
   );
 };
 
@@ -30,13 +41,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     marginHorizontal: 30,
-    paddingTop: 10,
   },
 
-  button: {
+  btn: {
     flex: 1,
     justifyContent: "center",
-    height: 40,
+    height: 50,
+    paddingTop: 20,
   },
 
   center: { alignItems: "center" },

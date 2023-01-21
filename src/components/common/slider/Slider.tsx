@@ -3,7 +3,6 @@ import {
   NativeSyntheticEvent,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
   View,
   ViewStyle,
 } from "react-native";
@@ -14,15 +13,11 @@ import Animated, { FadeIn } from "react-native-reanimated";
 
 type Props = {
   list: React.ReactNode[];
-  state: { current: number; setCurrent: Function };
+  current: number;
   style?: ViewStyle | ViewStyle[];
 };
 
-const ScreenSlider = ({
-  list,
-  state: { current, setCurrent },
-  style = {},
-}: Props) => {
+const Slider = ({ list, current, style = {} }: Props) => {
   const scrollRef = useRef<ScrollView>();
 
   useEffect(() => {
@@ -62,7 +57,7 @@ const ScreenSlider = ({
   );
 };
 
-export default ScreenSlider;
+export default Slider;
 
 const styles = StyleSheet.create({
   btn: {

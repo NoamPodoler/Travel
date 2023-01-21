@@ -1,13 +1,17 @@
+import { PlanInterface } from "../utils/interfaces";
+
 export const LANDING = "Landing";
+export const SIGNINUP = "Sign In & Sign Up";
 export const MAIN = "Main";
-export const CREATE_TRIP = "Create a trip";
-export const TICKET = "Ticket";
+export const PLAN = "Plan";
+export const PROFILE = "Profile";
 export const SETTINGS = "Settings";
 
 export type RootNavigatorParamList = {
   [LANDING]: undefined;
-  [MAIN]: undefined;
+  [SIGNINUP]: { startWithPopup: boolean };
   [CREATE_TRIP]: undefined;
-  [TICKET]: undefined;
+  [PLAN]: PlanInterface;
+  [PROFILE]: undefined;
   [SETTINGS]: undefined;
 };
