@@ -1,6 +1,6 @@
 import { Temporal } from "@js-temporal/polyfill";
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
+import { getAuth, initializeAuth } from "firebase/auth";
 import {
   collection,
   doc,
@@ -22,6 +22,9 @@ import {
 } from "./src/utils/fn";
 import { DestinationInterface, PlanInterface } from "./src/utils/interfaces";
 import { uuidv4 } from "@firebase/util";
+import AsyncStorage, {
+  AsyncStorageStatic,
+} from "@react-native-community/async-storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -37,8 +40,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
-
-//
 
 export const addPlan = async (plan: PlanInterface) => {
   const uid = uuidv4();
@@ -69,6 +70,7 @@ export const fetchPlans = async ({
   const plans = [];
 
   for (const destination of selectedDestinations) {
+    // date format of startingDate and endingDate
     const sDate = intToDate(startingDate);
     const eDate = intToDate(endingDate);
 
@@ -128,3 +130,10 @@ export const fetchPlans = async ({
 
   return await filteredPlans;
 };
+function getReactNativePersistence(
+  AsyncStorage: AsyncStorageStatic
+):
+  | import("@firebase/auth").Persistence
+  | import("@firebase/auth").Persistence[] {
+  throw new Error("Function not implemented.");
+}

@@ -1,11 +1,4 @@
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { SafeAreaView, StyleSheet, Text, TextInput, View } from "react-native";
 import React, { useState } from "react";
 import {
   useAppDispatch,
@@ -22,6 +15,7 @@ import FocusedTripDestinations from "./extra/FocusedTripDestinations";
 import ContinentsBar from "./extra/ContinentsBar";
 import FlexSection from "../../../../components/common/flexSection/FlexSection";
 import { DestinationInterface } from "../../../../utils/interfaces";
+import CustomButton from "../../../../components/common/customButton/CustomButton";
 
 type Props = { index: number; current: number; setFocus: Function };
 const TripDestination = ({ index, current, setFocus }: Props) => {
@@ -42,7 +36,7 @@ const TripDestination = ({ index, current, setFocus }: Props) => {
   const timeout = React.useRef(null);
 
   const onChangeHandler = (value) => {
-    setSearchValue(value);
+    // setSearchValue(value);
     clearTimeout(timeout.current);
     timeout.current = setTimeout(() => {
       const newData = fetchDestinations(value);
@@ -67,7 +61,12 @@ const TripDestination = ({ index, current, setFocus }: Props) => {
   };
 
   const fetchDestinations = (str: string) => {
-    return destinations.filter((item) => item.title.includes(str));
+    return destinations.filter(
+      (item) =>
+        item.title.toUpperCase().includes(str.toUpperCase()) ||
+        item.country.toUpperCase().includes(str.toUpperCase()) ||
+        item.continent.toUpperCase().includes(str.toUpperCase())
+    );
   };
 
   return (
@@ -111,7 +110,7 @@ const TripDestination = ({ index, current, setFocus }: Props) => {
 
           {isSearchFocus && (
             <Animated.View entering={FadeIn} exiting={FadeOut}>
-              <TouchableOpacity
+              <CustomButton
                 onPress={() => setSearchFocus(false)}
                 style={{ paddingVertical: 20 }}
               >
@@ -120,7 +119,7 @@ const TripDestination = ({ index, current, setFocus }: Props) => {
                   size={24}
                   color={invertedMain}
                 />
-              </TouchableOpacity>
+              </CustomButton>
             </Animated.View>
           )}
         </View>

@@ -5,12 +5,12 @@ import Slider from "../../../../../../components/common/slider/Slider";
 import { WHITE } from "../../../../../../utils/colors";
 import SliderFooter from "../../../../../../components/common/slider/SliderFooter";
 import Footer from "../../../../../../components/other/footer/Footer";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { AntDesign, Ionicons } from "@expo/vector-icons";
 import TripTicketPartner from "./pages/TripTicketPartner";
 import { useThemeColors } from "../../../../../../app/hooks";
 import { shadow } from "../../../../../../utils/styling";
 import { GendersType, LanguagesType } from "../../../../../../utils/interfaces";
+import CustomButton from "../../../../../../components/common/customButton/CustomButton";
 
 type Props = {
   state: {
@@ -24,6 +24,7 @@ type Props = {
   setDescription: Function;
   setPartnerDescription: Function;
   setGender: Function;
+  setFocus: Function;
 };
 
 const CreatePlanForm = ({
@@ -31,6 +32,7 @@ const CreatePlanForm = ({
   setDescription,
   setPartnerDescription,
   setGender,
+  setFocus,
 }: Props) => {
   const { main, second, invertedMain, invertedSecond } = useThemeColors();
   const [current, setCurrent] = useState(0);
@@ -46,6 +48,7 @@ const CreatePlanForm = ({
       state={state}
       setPartnerDescription={setPartnerDescription}
       setGender={setGender}
+      setFocus={setFocus}
     />,
   ];
 
@@ -64,17 +67,17 @@ const CreatePlanForm = ({
       <Footer
         left={
           current > 0 && (
-            <TouchableOpacity onPress={handlePrev}>
+            <CustomButton onPress={handlePrev}>
               <AntDesign name="swapleft" size={24} color={invertedMain} />
-            </TouchableOpacity>
+            </CustomButton>
           )
         }
         center={<SliderFooter list={pages} current={current} />}
         right={
           current < pages.length - 1 && (
-            <TouchableOpacity onPress={handleNext}>
+            <CustomButton onPress={handleNext}>
               <AntDesign name="swapright" size={24} color={invertedMain} />
-            </TouchableOpacity>
+            </CustomButton>
           )
         }
         style={{ paddingVertical: 10 }}

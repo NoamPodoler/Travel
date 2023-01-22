@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, Image } from "react-native";
 import React from "react";
 import { Ionicons } from "@expo/vector-icons";
 import { useThemeColors } from "../../../../../app/hooks";
@@ -18,6 +18,7 @@ import {
   RootNavigatorParamList,
 } from "../../../../../navigation/NavigationTypes";
 import { Temporal } from "@js-temporal/polyfill";
+import CustomButton from "../../../../../components/common/customButton/CustomButton";
 
 type Props = {
   item: PlanInterface;
@@ -32,7 +33,7 @@ const TripExploreTicketItem = ({ item, index }: Props) => {
     useNavigation<StackNavigationProp<RootNavigatorParamList>>();
 
   return (
-    <TouchableOpacity
+    <CustomButton
       onPress={() => navigation.navigate({ name: PLAN, params: item })}
     >
       <Animated.View
@@ -81,7 +82,7 @@ const TripExploreTicketItem = ({ item, index }: Props) => {
           </View>
         </View>
       </Animated.View>
-    </TouchableOpacity>
+    </CustomButton>
   );
 };
 

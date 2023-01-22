@@ -7,7 +7,6 @@ import {
 } from "../../../app/hooks";
 import { row } from "../../../utils/styling";
 import { hexToRgbA } from "../../../utils/fn";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { removeDestination } from "../../../features/SearchSlice";
 import Animated, {
   FadeInDown,
@@ -15,6 +14,7 @@ import Animated, {
   FadeOutDown,
   FadeOutUp,
 } from "react-native-reanimated";
+import CustomButton from "../../../components/common/customButton/CustomButton";
 
 type Props = {
   readOnly?: boolean;
@@ -43,7 +43,7 @@ const SelectedDestinationsRow = ({
       >
         {selectedDestinations.map((item, index) => (
           <Animated.View key={index.toString()} entering={FadeInDown}>
-            <TouchableOpacity
+            <CustomButton
               onPress={() => {
                 if (!readOnly) dispatch(removeDestination(item));
               }}
@@ -51,7 +51,6 @@ const SelectedDestinationsRow = ({
                 styles.item,
                 { backgroundColor: inverted ? main : invertedMain },
               ]}
-              activeOpacity={readOnly ? 1 : 0.5}
             >
               <Text
                 style={{
@@ -69,7 +68,7 @@ const SelectedDestinationsRow = ({
               >
                 {item.country}
               </Text>
-            </TouchableOpacity>
+            </CustomButton>
           </Animated.View>
         ))}
       </ScrollView>

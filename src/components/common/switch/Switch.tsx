@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { switchDarkMode } from "../../../features/SettingsSlice";
 import { useThemeColors } from "../../../app/hooks";
@@ -8,6 +8,7 @@ import Animated, {
   useDerivedValue,
   withTiming,
 } from "react-native-reanimated";
+import CustomButton from "../customButton/CustomButton";
 
 type Props = {
   status: boolean;
@@ -41,7 +42,7 @@ const Switch = ({
   });
 
   return (
-    <TouchableOpacity
+    <CustomButton
       style={[
         styles.switch,
         {
@@ -65,7 +66,7 @@ const Switch = ({
           },
         ]}
       />
-    </TouchableOpacity>
+    </CustomButton>
   );
 };
 

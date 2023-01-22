@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React from "react";
 import Animated, {
   interpolateColor,
@@ -8,6 +8,7 @@ import Animated, {
 import { useThemeColors } from "../../../app/hooks";
 import { withCustomTiming } from "../../../utils/fn";
 import { row, center } from "../../../utils/styling";
+import CustomButton from "../customButton/CustomButton";
 
 type Props = {
   options: string[];
@@ -66,7 +67,7 @@ const Option = ({
     };
   });
   return (
-    <TouchableOpacity
+    <CustomButton
       style={{ flex: 1, height: 40 }}
       onPress={() => setCurrent(index)}
     >
@@ -75,7 +76,7 @@ const Option = ({
           {item}
         </Animated.Text>
       </Animated.View>
-    </TouchableOpacity>
+    </CustomButton>
   );
 };
 

@@ -1,27 +1,20 @@
-import React, { useMemo, useState } from "react";
-import { Image, TouchableOpacity, View } from "react-native";
-import {
-  useAppDispatch,
-  useAppSelector,
-  useThemeColors,
-} from "../../../../../app/hooks";
-import { BLACK, BLUE, PURPLE, WHITE } from "../../../../../utils/colors";
+import React from "react";
+import { Image, View } from "react-native";
+import { useAppDispatch, useThemeColors } from "../../../../../app/hooks";
+import { PURPLE } from "../../../../../utils/colors";
 import { Text, StyleSheet } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { hexToRgbA, withCustomTiming } from "../../../../../utils/fn";
+import { withCustomTiming } from "../../../../../utils/fn";
 import Animated, {
+  Extrapolate,
   interpolate,
-  interpolateColor,
-  interpolateColors,
   useAnimatedStyle,
   useDerivedValue,
+  withDelay,
+  withTiming,
 } from "react-native-reanimated";
-import {
-  addDestination,
-  modifySelectedDestination,
-} from "../../../../../features/SearchSlice";
+import { addDestination } from "../../../../../features/SearchSlice";
 import { DestinationInterface } from "../../../../../utils/interfaces";
-import ExpoFastImage from "expo-fast-image";
+import CustomButton from "../../../../../components/common/customButton/CustomButton";
 interface Props {
   item: DestinationInterface;
   selected: boolean;
@@ -38,39 +31,49 @@ const DestinationItem = ({ item, selected }: Props) => {
   );
 
   const rStyleItem = useAnimatedStyle(() => {
-    const width = interpolate(focus.value, [0, 1], [240, 0]);
-    const paddingHorizontal = interpolate(focus.value, [0, 1], [4, 0]);
-    const opacity = interpolate(focus.value, [0, 0.6], [1, 0]);
+    const width = interpolate(focus.value, [0, 1], [240, 0], Extrapolate.CLAMP);
+    const paddingHorizontal = interpolate(
+      focus.value,
+      [0, 1],
+      [4, 0],
+      Extrapolate.CLAMP
+    );
+    const opacity = interpolate(
+      focus.value,
+      [0, 0.75],
+      [1, 0],
+      Extrapolate.CLAMP
+    );
+
     return {
       width,
       paddingHorizontal,
       opacity,
     };
   });
-
   return (
     <Animated.View style={[rStyleItem]}>
-      <TouchableOpacity
+      <CustomButton
         onPress={() => {
           if (!selected) dispatch(addDestination(item));
         }}
-        style={[styles.destination]}
-        activeOpacity={1}
+        style={styles.destination}
+        containerStyle={{ flex: 1 }}
+        scaleSize={0.975}
       >
         <Image
           // source={require("../../../../../../assets/images/destinations/Paris.jpg")}
           style={styles.background}
         />
 
-        <Text
-          style={[
-            styles.title,
-            { backgroundColor: second, color: invertedMain },
-          ]}
-        >
-          {item.title}
-        </Text>
-      </TouchableOpacity>
+        <View style={[styles.title, { backgroundColor: second }]}>
+          <Text
+            style={[{ color: invertedMain, height: 20, overflow: "hidden" }]}
+          >
+            {item.title}
+          </Text>
+        </View>
+      </CustomButton>
     </Animated.View>
   );
 };

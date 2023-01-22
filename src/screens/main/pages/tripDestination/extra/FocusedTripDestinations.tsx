@@ -1,11 +1,4 @@
-import {
-  StyleSheet,
-  View,
-  Text,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, View, Text, Image, ScrollView } from "react-native";
 import React, { useState } from "react";
 import Animated, { FadeIn, FadeOut, FadeOutUp } from "react-native-reanimated";
 import {

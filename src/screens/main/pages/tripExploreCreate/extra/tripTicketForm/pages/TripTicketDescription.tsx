@@ -3,7 +3,7 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  TouchableOpacity,
+  CustomButton,
   View,
 } from "react-native";
 import React, { useState } from "react";

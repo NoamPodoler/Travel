@@ -1,10 +1,4 @@
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ScrollView, StyleSheet, Text, CustomButton, View } from "react-native";
 import React from "react";
 import OpenSection from "../../../../../components/common/openSection/OpenSection";
 import { useOpenSection, useThemeColors } from "../../../../../app/hooks";

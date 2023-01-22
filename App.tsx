@@ -21,8 +21,13 @@ import {
 } from "firebase/firestore";
 import { db } from "./firebase";
 import { uuidv4 } from "@firebase/util";
+import { LogBox } from "react-native";
 
 export default function App() {
+  LogBox.ignoreLogs([
+    "AsyncStorage has been extracted from react-native core and will be removed in a future release. It can now be installed and imported from '@react-native-async-storage/async-storage' instead of 'react-native'. See https://github.com/react-native-async-storage/async-storage",
+  ]);
+
   return (
     <Provider store={store}>
       <Application />
@@ -38,21 +43,6 @@ const Application = () => {
   }, []);
 
   const { destinations } = useAppSelector((state) => state.data);
-
-  // const writeData = async () => {
-  //   try {
-  //     await setDoc(doc(db, "destinations/Amsterdam", "2023"), {
-  //       destinations: destinations,
-  //     });
-  //     console.log("success");
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   if (destinations.length > 0) writeData();
-  // }, [destinations]);
 
   return (
     <NavigationContainer>

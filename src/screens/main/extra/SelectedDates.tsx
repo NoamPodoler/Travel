@@ -1,10 +1,4 @@
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { ScrollView, StyleSheet, Text, CustomButton, View } from "react-native";
 import React from "react";
 import {
   useAppDispatch,
@@ -54,9 +48,9 @@ const SelectedDates = ({}: Props) => {
           </Text>
         </View>
 
-        <TouchableOpacity style={[center, styles.btn]} onPress={() => {}}>
+        <CustomButton style={[center, styles.btn]} onPress={() => {}}>
           <AntDesign name="plus" size={20} color={WHITE} />
-        </TouchableOpacity>
+        </CustomButton>
       </View>
     )
   );

@@ -10,7 +10,7 @@ export const SETTINGS = "Settings";
 export type RootNavigatorParamList = {
   [LANDING]: undefined;
   [SIGNINUP]: { startWithPopup: boolean };
-  [CREATE_TRIP]: undefined;
+  [MAIN]: undefined;
   [PLAN]: PlanInterface;
   [PROFILE]: undefined;
   [SETTINGS]: undefined;

@@ -2,7 +2,7 @@ import {
   SafeAreaView,
   StyleSheet,
   Text,
-  TouchableOpacity,
+  CustomButton,
   View,
 } from "react-native";
 import React from "react";
@@ -35,12 +35,12 @@ const Popup = ({ refrence: { isShown, setShown } }: Props) => {
       >
         <View style={[styles.popup, { backgroundColor: second }]}>
           <View style={row}>
-            <TouchableOpacity
+            <CustomButton
               style={[center, styles.btn, { backgroundColor: main }]}
               onPress={handleExit}
             >
               <EvilIcons name="close" size={22} color={invertedMain} />
-            </TouchableOpacity>
+            </CustomButton>
           </View>
 
           {/* {ref.children} */}

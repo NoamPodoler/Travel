@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import {
   dateToInt,
@@ -14,7 +14,7 @@ import { useAppDispatch, useAppSelector } from "../../../../../app/hooks";
 import { addPlan } from "../../../../../../firebase";
 import { PURPLE, WHITE } from "../../../../../utils/colors";
 import { center } from "../../../../../utils/styling";
-import { useNavigation } from "@react-navigation/native";
+import { StackActions, useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import {
   MAIN,
@@ -22,6 +22,7 @@ import {
   SIGNINUP,
 } from "../../../../../navigation/NavigationTypes";
 import { resetData } from "../../../../../features/SearchSlice";
+import CustomButton from "../../../../../components/common/customButton/CustomButton";
 
 type Props = {
   state: {
@@ -31,9 +32,10 @@ type Props = {
     languages: LanguagesType[];
     gender: GendersType;
   };
+  setFocus: Function;
 };
 
-const CreatePlanHandler = ({ state }: Props) => {
+const CreatePlanHandler = ({ state, setFocus }: Props) => {
   const navigation =
     useNavigation<StackNavigationProp<RootNavigatorParamList>>();
 
@@ -70,14 +72,16 @@ const CreatePlanHandler = ({ state }: Props) => {
       try {
         addPlan(plan);
         dispatch(resetData());
+        // setFocus(0);
+        navigation.dispatch(StackActions.popToTop());
         navigation.navigate(MAIN);
       } catch (error) {}
     }
   };
   return (
-    <TouchableOpacity style={[center, styles.btn]} onPress={handleCreatePlan}>
+    <CustomButton style={[center, styles.btn]} onPress={handleCreatePlan}>
       <Text style={{ color: WHITE }}>Create</Text>
-    </TouchableOpacity>
+    </CustomButton>
   );
 };
 

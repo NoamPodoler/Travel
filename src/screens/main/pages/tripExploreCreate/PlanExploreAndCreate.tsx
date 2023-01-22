@@ -1,31 +1,12 @@
+import { StyleSheet, Text, SafeAreaView } from "react-native";
+import React, { useEffect, useReducer, useState } from "react";
 import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  SafeAreaView,
-} from "react-native";
-import React, {
-  useCallback,
-  useEffect,
-  useMemo,
-  useReducer,
-  useState,
-} from "react";
-import {
-  useAppDispatch,
   useAppSelector,
   useOpenSection,
   useThemeColors,
 } from "../../../../app/hooks";
 import { center } from "../../../../utils/styling";
-import { ScrollView } from "react-native-gesture-handler";
-import {
-  dateToInt,
-  dateToMonthYear,
-  getMonth,
-  getRandomNumber,
-} from "../../../../utils/fn";
+import { dateToInt } from "../../../../utils/fn";
 import OpenSection from "../../../../components/common/openSection/OpenSection";
 import FlexSection from "../../../../components/common/flexSection/FlexSection";
 import {
@@ -33,20 +14,12 @@ import {
   LanguagesType,
   PlanInterface,
 } from "../../../../utils/interfaces";
-import ThreeDotLoader from "../../../../components/common/dotLoader/ThreeDotLoader";
-import TripTicketTab from "./extra/CreatePlanHeader";
 import Animated, { FadeInUp } from "react-native-reanimated";
-import TripTicketForm from "./extra/tripTicketForm/CreatePlanForm";
 import { fetchPlans } from "../../../../../firebase";
-import { TODAY } from "../../../../utils/constans";
-import { useFocusEffect } from "@react-navigation/native";
-import Popup from "../../../../components/common/popup/Popup";
-import EmptyList from "./extra/EmptyList";
-import TripExploreTicketItem from "./extra/PlanListItem";
-import PlanListItem from "./extra/PlanListItem";
 import PlanList from "./extra/PlanList";
 import CreatePlanHeader from "./extra/CreatePlanHeader";
 import CreatePlanForm from "./extra/tripTicketForm/CreatePlanForm";
+import CustomButton from "../../../../components/common/customButton/CustomButton";
 
 type Props = {
   index: number;
@@ -138,8 +111,6 @@ const PlanExploreAndCreate = ({ index, current, setFocus }: Props) => {
     }
   }, [startingDate, endingDate, selectedDestinations]);
 
-  //
-
   const isShown = startingDate !== null && endingDate !== null;
   return isShown ? (
     <SafeAreaView style={styles.page}>
@@ -150,12 +121,12 @@ const PlanExploreAndCreate = ({ index, current, setFocus }: Props) => {
             load={createTicketLoad.unload}
             containerStyle={{ marginHorizontal: 10, borderRadius: 10 }}
           >
-            <TouchableOpacity
+            <CustomButton
               style={[center, styles.btn, { backgroundColor: invertedMain }]}
               onPress={() => setCreateTicketShown(true)}
             >
               <Text style={{ color: main }}>Create a new Ticket</Text>
-            </TouchableOpacity>
+            </CustomButton>
           </OpenSection>
         </Animated.View>
       </OpenSection>
@@ -196,12 +167,13 @@ const PlanExploreAndCreate = ({ index, current, setFocus }: Props) => {
           setGender={(value) =>
             dispatch({ payload: value, type: ACTIONS.SET_GENDER })
           }
+          setFocus={setFocus}
         />
       </FlexSection>
 
       {/* List */}
       <FlexSection load={createTicketLoad.unload}>
-        <PlanList list={plansList} isEmpty={false} />
+        <PlanList list={plansList} isEmpty={isEmpty} />
       </FlexSection>
     </SafeAreaView>
   ) : (

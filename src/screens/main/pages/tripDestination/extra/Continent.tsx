@@ -1,4 +1,4 @@
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet } from "react-native";
 import React, { useEffect, useMemo } from "react";
 import { useAppSelector, useThemeColors } from "../../../../../app/hooks";
 import Animated, {
@@ -10,6 +10,7 @@ import Animated, {
 } from "react-native-reanimated";
 import { getContinentList, withCustomTiming } from "../../../../../utils/fn";
 import { DestinationInterface } from "../../../../../utils/interfaces";
+import CustomButton from "../../../../../components/common/customButton/CustomButton";
 
 type Props = {
   item: string;
@@ -61,7 +62,7 @@ const Continent = ({ item, data, setData }: Props) => {
   };
 
   return (
-    <TouchableOpacity onPress={handleSetData} activeOpacity={1}>
+    <CustomButton onPress={handleSetData}>
       <Animated.View
         style={[
           rStyleItem,
@@ -75,7 +76,7 @@ const Continent = ({ item, data, setData }: Props) => {
       >
         <Animated.Text style={rStyleText}>{item}</Animated.Text>
       </Animated.View>
-    </TouchableOpacity>
+    </CustomButton>
   );
 };
 

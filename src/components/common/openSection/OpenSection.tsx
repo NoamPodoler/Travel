@@ -1,13 +1,11 @@
 import { StyleSheet, Text, View, ViewStyle } from "react-native";
 import React, { useEffect, useState } from "react";
 import Animated, {
+  Extrapolate,
   FadeIn,
   interpolate,
   SharedValue,
   useAnimatedStyle,
-  useDerivedValue,
-  useSharedValue,
-  withCustomTiming,
 } from "react-native-reanimated";
 import { SCREEN_HEIGHT } from "../../../utils/constans";
 
@@ -33,9 +31,19 @@ const OpenSection = ({
   const [height, setHeight] = useState(0);
 
   const rStyle = useAnimatedStyle(() => {
-    const _opacity = interpolate(load.value, [0, 1], [0, 1]);
-    const marginTop = interpolate(load.value, [0, 1], [-height, 0]);
-    const paddingBottom = interpolate(load.value, [0, 1], [-height, 0]);
+    const _opacity = interpolate(load.value, [0, 1], [0, 1], Extrapolate.CLAMP);
+    const marginTop = interpolate(
+      load.value,
+      [0, 1],
+      [-height, 0],
+      Extrapolate.CLAMP
+    );
+    const paddingBottom = interpolate(
+      load.value,
+      [0, 1],
+      [-height, 0],
+      Extrapolate.CLAMP
+    );
 
     return {
       opacity: opacity ? _opacity : 1,

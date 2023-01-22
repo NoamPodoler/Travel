@@ -1,10 +1,4 @@
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleSheet, Text, TextInput, View } from "react-native";
 import React, { useState } from "react";
 import { useAppSelector, useThemeColors } from "../../../../../../../app/hooks";
 import { center, row } from "../../../../../../../utils/styling";
@@ -23,7 +17,6 @@ import CreatePlanHandler from "../../CreatePlanHandler";
 import SingleOption from "../../../../../../../components/common/singleOption/SingleOption";
 
 type Props = {
-  setCurrent: Function;
   state: {
     title: string;
     description: string;
@@ -32,14 +25,17 @@ type Props = {
     gender: GendersType;
   };
   setPartnerDescription: Function;
+  setCurrent: Function;
   setGender: Function;
+  setFocus: Function;
 };
 
 const TripTicketPartner = ({
-  setCurrent,
   state,
   setPartnerDescription,
   setGender,
+  setCurrent,
+  setFocus,
 }: Props) => {
   const { main, second, invertedMain, invertedSecond } = useThemeColors();
 
@@ -92,7 +88,7 @@ const TripTicketPartner = ({
         current={GENDER_OPTIONS.indexOf(state.gender)}
         setCurrent={(i) => setGender(GENDER_OPTIONS[i])}
       />
-      <CreatePlanHandler state={state} />
+      <CreatePlanHandler state={state} setFocus={setFocus} />
     </View>
   );
 };

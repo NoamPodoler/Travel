@@ -1,10 +1,4 @@
-import {
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleSheet, Text, TextInput, View } from "react-native";
 import React from "react";
 import { AntDesign } from "@expo/vector-icons";
 import {
@@ -15,6 +9,7 @@ import {
 } from "../../../../../utils/fn";
 import { row } from "../../../../../utils/styling";
 import { useAppSelector, useThemeColors } from "../../../../../app/hooks";
+import CustomButton from "../../../../../components/common/customButton/CustomButton";
 
 type Props = {
   title: string;
@@ -49,14 +44,14 @@ const CreatePlanHeader = ({ title, setTitle, setCreateTicketShown }: Props) => {
           value={title}
           onChangeText={(value) => setTitle(value)}
         />
-        <TouchableOpacity onPress={() => setCreateTicketShown(false)}>
+        <CustomButton onPress={() => setCreateTicketShown(false)}>
           <AntDesign
             name="close"
             size={20}
             color={main}
             style={{ padding: 10 }}
           />
-        </TouchableOpacity>
+        </CustomButton>
       </View>
 
       <Text

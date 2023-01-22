@@ -1,11 +1,4 @@
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  Image,
-} from "react-native";
+import { SafeAreaView, StyleSheet, Text, View, Image } from "react-native";
 import React from "react";
 import { useAppDispatch, useThemeColors } from "../app/hooks";
 import { setDarkMode, switchDarkMode } from "../features/SettingsSlice";
@@ -23,6 +16,7 @@ import { SCREEN_WIDTH } from "../utils/constans";
 import { center, row } from "../utils/styling";
 import { dateFormat, hexToRgbA, intToDate } from "../utils/fn";
 import { Temporal } from "@js-temporal/polyfill";
+import CustomButton from "../components/common/customButton/CustomButton";
 
 type Props = {};
 
@@ -73,19 +67,19 @@ const Plan = (props: Props) => {
 
       <Footer
         left={
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <CustomButton onPress={() => navigation.goBack()}>
             <Ionicons name="return-down-back" size={22} color={invertedMain} />
-          </TouchableOpacity>
+          </CustomButton>
         }
         center={
-          <TouchableOpacity
+          <CustomButton
             style={[center, styles.creator, { backgroundColor: second }]}
             onPress={() => navigation.navigate(PROFILE)}
           >
             <Text style={[styles.subTitle, { color: invertedMain }]}>
               {creator.name}
             </Text>
-          </TouchableOpacity>
+          </CustomButton>
         }
         right={<></>}
       />

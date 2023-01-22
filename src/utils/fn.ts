@@ -68,11 +68,11 @@ export const getRandomNumber = (n1: number, n2: number) => {
   return Math.round(Math.random() * (n2 - n1)) + n1 + 1;
 };
 
-export const withCustomTiming = (i: number) => {
+export const withCustomTiming = (i: number, duration = 500) => {
   "worklet";
   return withTiming(i, {
-    easing: Easing.bezier(0.85, 0, 0.15, 1),
-    duration: 400,
+    easing: Easing.bezier(0.33, 1, 0.68, 1),
+    duration,
   });
 };
 

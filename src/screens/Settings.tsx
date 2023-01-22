@@ -1,10 +1,4 @@
-import {
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { useAppDispatch, useThemeColors } from "../app/hooks";
 import { setDarkMode, switchDarkMode } from "../features/SettingsSlice";
@@ -13,11 +7,11 @@ import { AntDesign, Feather, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import {
-  CREATE_TRIP,
   RootNavigatorParamList,
   SETTINGS,
 } from "../navigation/NavigationTypes";
 import Switch from "../components/common/switch/Switch";
+import CustomButton from "../components/common/customButton/CustomButton";
 
 type Props = {};
 
@@ -35,16 +29,16 @@ const Settings = (props: Props) => {
 
       <Footer
         left={
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <CustomButton onPress={() => navigation.goBack()}>
             <Ionicons name="return-down-back" size={22} color={invertedMain} />
-          </TouchableOpacity>
+          </CustomButton>
         }
         center={
-          <TouchableOpacity>
+          <CustomButton onPress={() => {}}>
             <Text style={{ color: invertedMain, fontStyle: "italic" }}>
               Settings
             </Text>
-          </TouchableOpacity>
+          </CustomButton>
         }
         right={
           <Switch

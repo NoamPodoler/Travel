@@ -2,13 +2,7 @@ import { Feather, AntDesign, Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import React, { useState } from "react";
-import {
-  View,
-  SafeAreaView,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-} from "react-native";
+import { View, SafeAreaView, Text, StyleSheet } from "react-native";
 import {
   createPopupRef,
   useAppSelector,
@@ -33,6 +27,7 @@ import OpenSection from "../../components/common/openSection/OpenSection";
 import TripExploreCreate from "./pages/tripExploreCreate/PlanExploreAndCreate";
 import Popup from "../../components/common/popup/Popup";
 import PlanExploreAndCreate from "./pages/tripExploreCreate/PlanExploreAndCreate";
+import CustomButton from "../../components/common/customButton/CustomButton";
 
 type Props = {};
 
@@ -111,21 +106,21 @@ const LeftFooter = ({ current, setCurrent }) => {
 
   if (current === 0)
     return (
-      <TouchableOpacity
+      <CustomButton
         style={{ flex: 1, width: "100%", alignItems: "flex-start" }}
         onPress={() => navigation.navigate(SETTINGS)}
       >
         <AntDesign name="barschart" size={22} color={invertedMain} />
-      </TouchableOpacity>
+      </CustomButton>
     );
 
   return (
-    <TouchableOpacity
+    <CustomButton
       style={{ flex: 1, width: "100%", alignItems: "flex-start" }}
       onPress={() => setCurrent((prev) => prev - 1)}
     >
       <Ionicons name="return-down-back" size={22} color={invertedMain} />
-    </TouchableOpacity>
+    </CustomButton>
   );
 };
 
@@ -134,21 +129,26 @@ const RightFooter = ({ current, setCurrent, pages }) => {
     useNavigation<StackNavigationProp<RootNavigatorParamList>>();
   const { main, second, invertedMain, invertedSecond } = useThemeColors();
 
-  const { selectedDestinations } = useAppSelector((state) => state.search);
+  const { selectedDestinations, startingDate, endingDate } = useAppSelector(
+    (state) => state.search
+  );
 
-  const isValid = !(current === 0 && selectedDestinations.length === 0);
+  const isValid =
+    (current === 0 && selectedDestinations.length !== 0) ||
+    (current === 1 && startingDate !== null && endingDate !== null);
 
   if (current === pages.length - 1)
     return (
-      <TouchableOpacity
+      <CustomButton
         style={{ flex: 1, width: "100%", alignItems: "flex-end" }}
+        onPress={() => {}}
       >
         <AntDesign name="barschart" size={22} color={invertedMain} />
-      </TouchableOpacity>
+      </CustomButton>
     );
 
   return (
-    <TouchableOpacity
+    <CustomButton
       style={{
         flex: 1,
         width: "100%",
@@ -160,7 +160,7 @@ const RightFooter = ({ current, setCurrent, pages }) => {
       }}
     >
       <Ionicons name="return-down-forward" size={22} color={invertedMain} />
-    </TouchableOpacity>
+    </CustomButton>
   );
 };
 

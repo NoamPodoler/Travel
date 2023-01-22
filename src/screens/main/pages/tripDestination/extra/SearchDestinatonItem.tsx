@@ -1,4 +1,4 @@
-import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { useMemo } from "react";
 import { SCREEN_WIDTH } from "../../../../../utils/constans";
 import Animated, {
@@ -18,6 +18,7 @@ import { withCustomTiming } from "../../../../../utils/fn";
 import { modifySelectedDestination } from "../../../../../features/SearchSlice";
 import { PURPLE } from "../../../../../utils/colors";
 import { DestinationInterface } from "../../../../../utils/interfaces";
+import CustomButton from "../../../../../components/common/customButton/CustomButton";
 
 type Props = {
   item: DestinationInterface;
@@ -75,12 +76,11 @@ const SearchDestinatonItem = ({ item, index }: Props) => {
   });
 
   return (
-    <TouchableOpacity
+    <CustomButton
       onPress={() => {
         dispatch(modifySelectedDestination(item));
       }}
       style={{ overflow: "hidden" }}
-      activeOpacity={1}
     >
       <Animated.View
         entering={FadeInDown.delay((index + 1) * 50)}
@@ -96,7 +96,7 @@ const SearchDestinatonItem = ({ item, index }: Props) => {
         </View>
         <Animated.View style={[styles.line, rStyleLine]} />
       </Animated.View>
-    </TouchableOpacity>
+    </CustomButton>
   );
 };
 

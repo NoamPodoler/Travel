@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import LottieView from "lottie-react-native";
 import { SCREEN_WIDTH } from "../utils/constans";
@@ -11,6 +11,7 @@ import OpenSection from "../components/common/openSection/OpenSection";
 import FlexSection from "../components/common/flexSection/FlexSection";
 import { PURPLE, WHITE } from "../utils/colors";
 import { center } from "../utils/styling";
+import CustomButton from "../components/common/customButton/CustomButton";
 
 type Props = {};
 
@@ -39,12 +40,12 @@ const Landing = (props: Props) => {
           Plan your trip and find the people to travel with!
         </Text>
         <OpenSection load={load}>
-          <TouchableOpacity
+          <CustomButton
             style={[center, styles.btn]}
             onPress={() => navigation.navigate(MAIN)}
           >
             <Text style={{ color: WHITE }}>Get Started</Text>
-          </TouchableOpacity>
+          </CustomButton>
         </OpenSection>
       </View>
 

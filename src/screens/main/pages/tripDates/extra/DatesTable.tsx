@@ -1,25 +1,18 @@
-import {
-  FlatList,
-  ListRenderItemInfo,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import React, { useMemo, useState } from "react";
-import { JANURARY } from "../../../../../utils/dates";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import React, { useState } from "react";
 import {
   useAppDispatch,
   useAppSelector,
   useThemeColors,
 } from "../../../../../app/hooks";
-import { BLACK, BLUE, PURPLE, WHITE } from "../../../../../utils/colors";
+import { PURPLE, WHITE } from "../../../../../utils/colors";
 import { Temporal } from "@js-temporal/polyfill";
 import { row } from "../../../../../utils/styling";
 import { AntDesign, MaterialCommunityIcons } from "@expo/vector-icons";
 import { addDate } from "../../../../../features/SearchSlice";
 import { TODAY } from "../../../../../utils/constans";
 import { getMonth, hexToRgbA } from "../../../../../utils/fn";
+import CustomButton from "../../../../../components/common/customButton/CustomButton";
 
 type Props = {};
 const SUNDAT_FIRST = true;
@@ -84,7 +77,7 @@ const DatesTable = ({}: Props) => {
     const isInMonth = current.month === currentDate.month;
 
     return (
-      <TouchableOpacity
+      <CustomButton
         style={[
           styles.item,
 
@@ -107,6 +100,7 @@ const DatesTable = ({}: Props) => {
 
           isSelected && { backgroundColor: PURPLE },
         ]}
+        animated={false}
         onPress={() => {
           if (isInFuture) dispatch(addDate(currentDate));
         }}
@@ -121,7 +115,7 @@ const DatesTable = ({}: Props) => {
         >
           {currentDate.day}
         </Text>
-      </TouchableOpacity>
+      </CustomButton>
     );
   };
 
@@ -134,7 +128,7 @@ const DatesTable = ({}: Props) => {
 
         <View style={[row, { flex: 2, justifyContent: "flex-end" }]}>
           {isStartingDateNotFocus && (
-            <TouchableOpacity
+            <CustomButton
               style={[styles.btn]}
               onPress={() =>
                 setCurrent(startingDate.add({ days: -startingDate.day + 1 }))
@@ -145,21 +139,15 @@ const DatesTable = ({}: Props) => {
                 size={14}
                 color={invertedMain}
               />
-            </TouchableOpacity>
+            </CustomButton>
           )}
 
-          <TouchableOpacity
-            style={styles.btn}
-            onPress={() => handlePrevMonth()}
-          >
+          <CustomButton style={styles.btn} onPress={() => handlePrevMonth()}>
             <AntDesign name="arrowleft" size={14} color={invertedMain} />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.btn}
-            onPress={() => handleNextMonth()}
-          >
+          </CustomButton>
+          <CustomButton style={styles.btn} onPress={() => handleNextMonth()}>
             <AntDesign name="arrowright" size={14} color={invertedMain} />
-          </TouchableOpacity>
+          </CustomButton>
         </View>
       </View>
 
