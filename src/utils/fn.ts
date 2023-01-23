@@ -68,7 +68,7 @@ export const getRandomNumber = (n1: number, n2: number) => {
   return Math.round(Math.random() * (n2 - n1)) + n1 + 1;
 };
 
-export const withCustomTiming = (i: number, duration = 500) => {
+export const withCustomTiming = (i: number, duration = 600) => {
   "worklet";
   return withTiming(i, {
     easing: Easing.bezier(0.33, 1, 0.68, 1),
@@ -137,6 +137,25 @@ export const getContinentList = (continent: string, list: WorldInterface) => {
   if (continent === "Oceania") return list.oceania;
   if (continent === "South America") return list.southAmerica;
   if (continent === "North America") return list.northAmerica;
+};
+
+export const getAlternativeDestinationsFromSelectedDestinations = (
+  selectedDestinations,
+  continents
+): DestinationInterface[] => {
+  return selectedDestinations
+    .reduce((acc, item) => {
+      if (acc.findIndex((i) => i.continent == item.continent) === -1)
+        acc.push({
+          continent: item.continent,
+          list: getContinentList(item.continent, continents).filter(
+            (item) => selectedDestinations.indexOf(item) === -1
+          ),
+        });
+      return acc;
+    }, [])
+    .map((item) => item.list)
+    .flat();
 };
 
 //

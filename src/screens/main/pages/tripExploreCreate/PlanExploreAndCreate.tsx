@@ -6,7 +6,11 @@ import {
   useThemeColors,
 } from "../../../../app/hooks";
 import { center } from "../../../../utils/styling";
-import { dateToInt } from "../../../../utils/fn";
+import {
+  dateToInt,
+  getAlternativeDestinationsFromSelectedDestinations,
+  getContinentList,
+} from "../../../../utils/fn";
 import OpenSection from "../../../../components/common/openSection/OpenSection";
 import FlexSection from "../../../../components/common/flexSection/FlexSection";
 import {
@@ -61,7 +65,7 @@ const PlanExploreAndCreate = ({ index, current, setFocus }: Props) => {
   const { main, second, invertedMain, invertedSecond } = useThemeColors();
 
   // Redux State
-  const { destinations } = useAppSelector((state) => state.data);
+  const { destinations, continents } = useAppSelector((state) => state.data);
   const { selectedDestinations, startingDate, endingDate } = useAppSelector(
     (state) => state.search
   );
@@ -82,22 +86,60 @@ const PlanExploreAndCreate = ({ index, current, setFocus }: Props) => {
   const createTicketLoad = useOpenSection(createTicketShown);
 
   // List State
-  const [plansList, setPlansList] = useState<PlanInterface[]>([]);
+  const [planList, setPlanList] = useState<PlanInterface[]>([]);
+  // Alternative State
+  const [alternateList, setAlternativePlansList] = useState<PlanInterface[]>(
+    []
+  );
+
   const [isEmpty, setEmpty] = useState(false);
 
-  const exploreListLoad = useOpenSection(plansList.length > 0 || isEmpty);
+  const exploreListLoad = useOpenSection(
+    planList.length > 0 || alternateList.length > 0 || isEmpty
+  );
 
   // Fetching Data When Relevant
   useEffect(() => {
     const handleFetchingData = async () => {
+      // Resets Lists
+      setPlanList([]);
+      setAlternativePlansList([]);
+      setEmpty(false);
+
+      // Fetching data
       const newData = await fetchPlans({
         startingDate: dateToInt(startingDate),
         endingDate: dateToInt(endingDate),
         selectedDestinations,
       });
 
-      setEmpty(newData.length === 0);
-      setPlansList(newData);
+      // Setting the new data as state
+      setPlanList(newData);
+
+      // Fetching Alternative Data
+      if (newData.length < 10) {
+        const releventDestinations =
+          getAlternativeDestinationsFromSelectedDestinations(
+            selectedDestinations,
+            continents
+          );
+
+        const releventPlans = await fetchPlans({
+          startingDate: dateToInt(startingDate),
+          endingDate: dateToInt(endingDate),
+          selectedDestinations: releventDestinations,
+        });
+
+        // Filters the relevant plans and remove the one of the main list
+        const filteredRelevantPlans = releventPlans.filter(
+          (item, index) => newData.findIndex((i) => item.uid === i.uid) === -1
+        );
+
+        setAlternativePlansList(filteredRelevantPlans);
+
+        if (newData.length === 0 && filteredRelevantPlans.length === 0)
+          setEmpty(true);
+      }
     };
 
     if (
@@ -105,8 +147,7 @@ const PlanExploreAndCreate = ({ index, current, setFocus }: Props) => {
       endingDate !== null &&
       selectedDestinations.length > 0
     ) {
-      setEmpty(false);
-      setPlansList([]);
+      // setEmpty(false);
       handleFetchingData();
     }
   }, [startingDate, endingDate, selectedDestinations]);
@@ -173,7 +214,11 @@ const PlanExploreAndCreate = ({ index, current, setFocus }: Props) => {
 
       {/* List */}
       <FlexSection load={createTicketLoad.unload}>
-        <PlanList list={plansList} isEmpty={isEmpty} />
+        <PlanList
+          planList={planList}
+          alternateList={alternateList}
+          isEmpty={isEmpty}
+        />
       </FlexSection>
     </SafeAreaView>
   ) : (

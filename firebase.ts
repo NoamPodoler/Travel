@@ -18,6 +18,7 @@ import {
   dateToInt,
   dateToMonthYear,
   dateToPriorMonthYear,
+  getContinentList,
   intToDate,
 } from "./src/utils/fn";
 import { DestinationInterface, PlanInterface } from "./src/utils/interfaces";
@@ -25,6 +26,7 @@ import { uuidv4 } from "@firebase/util";
 import AsyncStorage, {
   AsyncStorageStatic,
 } from "@react-native-community/async-storage";
+import { useAppSelector } from "./src/app/hooks";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -58,15 +60,17 @@ export const addPlan = async (plan: PlanInterface) => {
   });
 };
 
+interface fetchPlansProps {
+  startingDate: number;
+  endingDate: number;
+  selectedDestinations: DestinationInterface[];
+}
+
 export const fetchPlans = async ({
   startingDate,
   endingDate,
   selectedDestinations,
-}: {
-  startingDate: number;
-  endingDate: number;
-  selectedDestinations: DestinationInterface[];
-}) => {
+}: fetchPlansProps) => {
   const plans = [];
 
   for (const destination of selectedDestinations) {
@@ -130,10 +134,3 @@ export const fetchPlans = async ({
 
   return await filteredPlans;
 };
-function getReactNativePersistence(
-  AsyncStorage: AsyncStorageStatic
-):
-  | import("@firebase/auth").Persistence
-  | import("@firebase/auth").Persistence[] {
-  throw new Error("Function not implemented.");
-}

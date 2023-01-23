@@ -26,7 +26,7 @@ const DestinationItem = ({ item, selected }: Props) => {
   const dispatch = useAppDispatch();
 
   const focus = useDerivedValue(
-    () => withCustomTiming(selected ? 1 : 0),
+    () => withCustomTiming(selected ? 1 : 0, 600),
     [selected]
   );
 

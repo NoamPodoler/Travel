@@ -19,6 +19,7 @@ import {
 } from "../../../../../navigation/NavigationTypes";
 import { Temporal } from "@js-temporal/polyfill";
 import CustomButton from "../../../../../components/common/customButton/CustomButton";
+import { PURPLE } from "../../../../../utils/colors";
 
 type Props = {
   item: PlanInterface;
@@ -40,15 +41,10 @@ const TripExploreTicketItem = ({ item, index }: Props) => {
         style={[row, styles.item, { backgroundColor: second }]}
         entering={FadeInDown.delay((index + 1) * 50)}
       >
-        <Image
-          source={require("../../../../../../assets/images/destinations/Paris.jpeg")}
-          style={styles.image}
-        />
-
-        <View
-          style={[{ flex: 1, height: "100%", paddingLeft: 20, paddingTop: 10 }]}
-        >
-          <Text style={[{ color: invertedMain }, styles.block]}>
+        <View style={{ flex: 1, padding: 10 }}>
+          <Text
+            style={[{ fontSize: 16, color: invertedMain, marginBottom: 10 }]}
+          >
             {item.title}
           </Text>
 
@@ -60,7 +56,12 @@ const TripExploreTicketItem = ({ item, index }: Props) => {
               style={styles.icon}
             />
             <Text
-              style={[{ color: hexToRgbA(invertedMain, 0.5), fontSize: 12 }]}
+              style={[
+                {
+                  color: hexToRgbA(invertedMain, 0.5),
+                  fontSize: 12,
+                },
+              ]}
             >
               {destinationsToString(item.destinations)}
             </Text>
@@ -69,6 +70,7 @@ const TripExploreTicketItem = ({ item, index }: Props) => {
           <View
             style={{
               flex: 1,
+              marginTop: 10,
               justifyContent: "flex-end",
               alignItems: "flex-end",
             }}
@@ -101,11 +103,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginVertical: 3,
     borderRadius: 10,
+    backgroundColor: PURPLE,
   },
 
   icon: { marginRight: 4 },
-
-  block: {
-    marginBottom: 8,
-  },
 });
