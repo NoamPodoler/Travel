@@ -1,3 +1,4 @@
+import { Timestamp } from "firebase/firestore";
 import { CONTINENTS } from "./constans";
 
 export const GENDER_OPTIONS = ["Men", "Any", "Female"];
@@ -36,7 +37,10 @@ export interface WorldInterface {
 
 //
 
-export type MonthIntType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+// export type MonthIntType = 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12;
+
+export type PlanType = "Travel" | "";
+export type BudgetType = "Cheap" | "Expensive" | "Normal";
 
 export interface PlanCreator {
   name: string;
@@ -45,15 +49,41 @@ export interface PlanCreator {
 
 export interface PlanInterface {
   title: string;
-  destinations: DestinationInterface[];
+  destinations: DestinationInterface[] | string[];
   startingDate: number;
   endingDate: number;
   departureMonthYear: string;
-  creator: PlanCreator;
+  origin: string; //
+  global: boolean; //
   description: string;
   languages: LanguagesType[];
   gender: GendersType;
+  type: PlanType[]; //
+  budget: BudgetType; //
+  creatorName: string;
+  creatorUid: string;
   uid: string;
 }
 
 //
+
+export interface UserDataInterface {
+  name: string;
+  email: string;
+  password: string;
+  country: string;
+}
+
+export type UserType = {
+  uid: string;
+  name: string;
+  country: string;
+};
+
+export type MessageType = {
+  value: string;
+  from: UserType;
+  time: Timestamp;
+  id: string;
+  refrence?: MessageType;
+};

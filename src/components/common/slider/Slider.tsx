@@ -5,6 +5,7 @@ import {
   StyleSheet,
   View,
   ViewStyle,
+  VirtualizedList,
 } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { SCREEN_WIDTH } from "../../../utils/constans";
@@ -30,7 +31,7 @@ const Slider = ({ list, current, style = {} }: Props) => {
 
   return (
     <Animated.View
-      style={style}
+      style={[style]}
       onLayout={(event) =>
         setDimensions({
           width: event.nativeEvent.layout.width,

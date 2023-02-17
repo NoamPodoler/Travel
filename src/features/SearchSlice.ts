@@ -5,8 +5,8 @@ import { DestinationInterface } from "../utils/interfaces";
 
 interface State {
   selectedDestinations: DestinationInterface[];
-  startingDate: Temporal.PlainDate;
-  endingDate: Temporal.PlainDate;
+  startingDate: Temporal.PlainDate | null;
+  endingDate: Temporal.PlainDate | null;
 }
 
 const initialState: State = {
@@ -78,8 +78,25 @@ const SearchSlice = createSlice({
       }
     },
 
+    setAnytime: (state: State) => {
+      const start = TODAY;
+      const end = TODAY.add({ years: 10 });
+      if (
+        state.startingDate === null ||
+        state.endingDate === null ||
+        state.startingDate.until(start).days !== 0 ||
+        state.endingDate.until(end).days !== 0
+      ) {
+        state.startingDate = start;
+        state.endingDate = end;
+      }
+    },
+
     resetData: (state: State) => {
       state.selectedDestinations = [];
+    },
+
+    resetDates: (state: State) => {
       state.startingDate = null;
       state.endingDate = null;
     },
@@ -92,7 +109,9 @@ export const {
   removeDestination,
   goAnywhere,
   addDate,
+  setAnytime,
   resetData,
+  resetDates,
 } = SearchSlice.actions;
 const reducer = SearchSlice.reducer as Reducer<State>;
 export default reducer;

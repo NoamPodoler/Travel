@@ -6,6 +6,7 @@ import { DestinationInterface, WorldInterface } from "../utils/interfaces";
 interface State {
   destinations: DestinationInterface[];
   continents: WorldInterface;
+  failedToLoad: boolean;
 }
 
 const initialState: State = {
@@ -18,15 +19,17 @@ const initialState: State = {
     southAmerica: [],
     northAmerica: [],
   },
+  failedToLoad: false,
 };
 
 export const fetchDestinations = createAsyncThunk(
   "data/fetchDestinations",
   async () => {
     try {
-      const docRef = doc(db, "data", "initialData");
+      const docRef = doc(db, "initialData", "destinations");
       const docSnap = await getDoc(docRef);
-      const destinations = docSnap.data().destinations;
+
+      const destinations = docSnap.data().list;
       return destinations;
     } catch (error) {
       console.log(error);
@@ -71,7 +74,9 @@ const DataSlice = createSlice({
         state.continents = continents;
       }
     );
-    builder.addCase(fetchDestinations.rejected, (state, action) => {});
+    builder.addCase(fetchDestinations.rejected, (state, action) => {
+      state.failedToLoad = true;
+    });
   },
 });
 

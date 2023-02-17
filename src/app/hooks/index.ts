@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useWindowDimensions } from "react-native";
 import { useDerivedValue } from "react-native-reanimated";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
@@ -9,7 +9,8 @@ import {
   LIGHTER_GREY,
   LIGHT_GREY,
 } from "../../utils/colors";
-import { withCustomTiming } from "../../utils/fn";
+import { NotificationsContext } from "../../utils/context";
+import { withCustomTiming } from "../../utils/fn/style";
 import { RootState, AppDispatch } from "../store";
 
 // Use throughout your app instead of plain `useDispatch` and `useSelector`
@@ -50,14 +51,6 @@ export const useThemeColors = () => {
   return dark ? darkMode : lightMode;
 };
 
-// Open Section - Get Animated Value of (0 -> 1) from state {boolean}
-export const useOpenSection = (bool: boolean) => {
-  const load = useDerivedValue(() => withCustomTiming(bool ? 1 : 0), [bool]);
-  const unload = useDerivedValue(() => withCustomTiming(bool ? 0 : 1), [bool]);
-
-  return { load, unload };
-};
-
 // Slider Page - Get Ascending Value
 export const useSliderAscending = (current) => {
   const [ascending, setAscending] = useState<boolean>(false);
@@ -95,6 +88,15 @@ export const useSliderNavigation = (length: number) => {
 };
 
 export const createPopupRef = (bool: boolean) => {
+  const [isShown, setShown] = useState(bool);
+
+  return {
+    isShown,
+    setShown: (bool) => setShown(bool),
+  };
+};
+
+export const createBottomMenu = (bool: boolean) => {
   const [isShown, setShown] = useState(bool);
 
   return {

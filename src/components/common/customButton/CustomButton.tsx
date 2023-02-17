@@ -15,7 +15,8 @@ import Animated, {
   withRepeat,
   withTiming,
 } from "react-native-reanimated";
-import { withCustomTiming } from "../../../utils/fn";
+import { withCustomTiming } from "../../../utils/fn/style";
+import { shadow } from "../../../utils/styling";
 
 type Props = {
   children: React.ReactNode;
@@ -39,11 +40,12 @@ const CustomButton = ({
   const load = useSharedValue(0);
 
   const handlePressIn = () => {
-    load.value = withRepeat(withTiming(1, { duration: 120 }), 2, true);
+    load.value = withRepeat(withCustomTiming(1, 120), 2, true);
   };
 
   const rStyle = useAnimatedStyle(() => {
     const scale = interpolate(load.value, [0, 1], [1, scaleSize]);
+
     return {
       transform: [{ scale }],
     };
@@ -64,7 +66,7 @@ const CustomButton = ({
     );
 
   return (
-    <Animated.View style={[containerStyle, rStyle]}>
+    <Animated.View style={[shadow, containerStyle, rStyle]}>
       <TouchableOpacity
         onPress={() => {
           onPress();

@@ -1,4 +1,4 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ViewStyle } from "react-native";
 import React from "react";
 import Animated, {
   interpolateColor,
@@ -6,28 +6,29 @@ import Animated, {
   useDerivedValue,
 } from "react-native-reanimated";
 import { useThemeColors } from "../../../app/hooks";
-import { withCustomTiming } from "../../../utils/fn";
 import { row, center } from "../../../utils/styling";
 import CustomButton from "../customButton/CustomButton";
+import { withCustomTiming } from "../../../utils/fn/style";
 
 type Props = {
   options: string[];
-  current: number;
+  current: string;
   setCurrent: Function;
+  style?: ViewStyle;
 };
 
-const SingleOption = ({ options, current, setCurrent }: Props) => {
+const SingleOption = ({ options, current, setCurrent, style = {} }: Props) => {
   const { main, second, invertedMain, invertedSecond } = useThemeColors();
 
   return (
-    <View style={[row, { justifyContent: "center", marginTop: 10 }]}>
+    <View style={[row, { justifyContent: "center" }, style]}>
       {options.map((item, index) => (
         <Option
           key={index.toString()}
           index={index}
           item={item}
-          isFocus={current === index}
-          setCurrent={(index) => setCurrent(index)}
+          isFocus={options.indexOf(current) === index}
+          setCurrent={() => setCurrent(item)}
         />
       ))}
     </View>
@@ -67,10 +68,7 @@ const Option = ({
     };
   });
   return (
-    <CustomButton
-      style={{ flex: 1, height: 40 }}
-      onPress={() => setCurrent(index)}
-    >
+    <CustomButton style={{ height: 40 }} onPress={() => setCurrent(index)}>
       <Animated.View style={[rStyleOption, center, styles.btn]}>
         <Animated.Text style={[rStyleText, { fontSize: 12 }]}>
           {item}
@@ -87,5 +85,6 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 20,
     marginHorizontal: 4,
+    paddingHorizontal: 20,
   },
 });

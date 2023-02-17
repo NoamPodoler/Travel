@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, ViewStyle } from "react-native";
 import React from "react";
 import { switchDarkMode } from "../../../features/SettingsSlice";
 import { useThemeColors } from "../../../app/hooks";
@@ -16,6 +16,7 @@ type Props = {
   height?: number;
   width?: number;
   padding?: number;
+  style?: ViewStyle;
 };
 
 const Switch = ({
@@ -24,6 +25,7 @@ const Switch = ({
   height = 30,
   width = 54,
   padding = 3,
+  style = {},
 }: Props) => {
   const { main, second, invertedMain, invertedSecond, alternate, isDark } =
     useThemeColors();
@@ -52,6 +54,7 @@ const Switch = ({
           borderRadius: height / 2,
           paddingHorizontal: padding,
         },
+        style,
       ]}
       onPress={() => onPress(status)}
     >

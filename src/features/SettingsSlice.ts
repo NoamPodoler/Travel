@@ -1,10 +1,12 @@
 import { createSlice, Reducer } from "@reduxjs/toolkit";
+import { getLocales, getCalendars } from "expo-localization";
 
 interface State {
   dark: boolean;
   darkStatusBar: boolean;
   isStatusBarShown: boolean | null;
   isFooterShown: boolean;
+  location: any;
 }
 
 const initialState: State = {
@@ -12,6 +14,7 @@ const initialState: State = {
   darkStatusBar: false,
   isStatusBarShown: true,
   isFooterShown: true,
+  location: getLocales(),
 };
 
 const SettingsSlice = createSlice({

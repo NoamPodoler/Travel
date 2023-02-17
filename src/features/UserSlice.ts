@@ -1,16 +1,15 @@
 import { createSlice, Reducer } from "@reduxjs/toolkit";
-import { User as FirebaseUser } from "firebase/auth";
+import { User as FirebaseUser, User } from "firebase/auth";
+import { UserType } from "../utils/interfaces";
 
 interface State {
-  user: FirebaseUser | null;
-  fullName: string | null;
-  country: string | null;
+  firebaseUser: FirebaseUser | null;
+  additionalData: UserType | null;
 }
 
 const initialState: State = {
-  user: null,
-  fullName: null,
-  country: null,
+  firebaseUser: null,
+  additionalData: null,
 };
 
 const UserSlice = createSlice({
@@ -21,19 +20,22 @@ const UserSlice = createSlice({
       state: State,
       action: {
         payload: {
-          user: FirebaseUser | null;
-          fullName: string | null;
-          country: string | null;
+          firebaseUser: FirebaseUser | null;
+          additionalData: UserType;
         };
       }
     ) => {
-      state.user = action.payload.user;
-      state.fullName = action.payload.fullName;
-      state.country = action.payload.country;
+      state.firebaseUser = action.payload.firebaseUser;
+      state.additionalData = action.payload.additionalData;
+    },
+
+    disconnect: (state: State) => {
+      state.additionalData = null;
+      state.firebaseUser = null;
     },
   },
 });
 
-export const { setUser } = UserSlice.actions;
+export const { setUser, disconnect } = UserSlice.actions;
 const reducer = UserSlice.reducer as Reducer<State>;
 export default reducer;
